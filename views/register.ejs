@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<% include head %>
+</head>
+<body>
+	<div id="main" class="container">
+      <form action="/register" method="post" class="form-signin">
+        <h2 class="form-signin-heading">Register bro!</h2>
+        <hr>
+        <label for="inputFirstName" class="sr-only">First Name</label>
+        <input id="inputFirstName" type="text" placeholder="First Name" required="" autofocus="" class="form-control">
+
+        <label for="inputLastName" class="sr-only">Last Name</label>
+        <input id="inputLastName" type="text" placeholder="Last Name" required="" autofocus="" class="form-control">
+
+        <label for="inputEmail" class="sr-only">Email</label>
+        <input id="inputEmail" type="text" placeholder="Email" required="" autofocus="" class="form-control">
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input id="inputPassword" type="password" placeholder="Password" required="" class="form-control">
+        
+        <button id="btn-sign-in" type="submit" class="btn btn-lg btn-primary btn-block">Register</button>
+        
+        <hr>
+      </form>
+    </div>
+
+	<% include scripts-ext %>
+	<script src="javascripts/global.js"></script>
+</body>
