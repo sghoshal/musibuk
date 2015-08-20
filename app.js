@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var sessions = require('client-sessions');
+var mongoModel = require('./mongo/models');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/users');
@@ -31,6 +33,34 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Session details to be used.
+app.use(sessions( {
+    cookieName: 'session',
+    secret: 'asdkjbasfkjnwefoqiwer',
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000
+}));
+
+// Middleware for session handling.
+app.use(function(req, res, next) {
+    if(req.session && req.session.user) {
+        console.log('app.js App details: %s', req.session.user);
+
+        mongoModel.UserModel.findOne({ email: req.session.user.email }, function(err, user) {
+            if(user) {
+                req.user = user;
+                delete req.user.password;
+                req.session.user = user;
+                res.locals.user = req.user;
+            }
+            next();     // Pass the control to the next handler.
+        });
+    }
+    else {
+        next();
+    }
+});
+
 // All routes.
 app.use('/', routes);
 app.use('/users', users);
@@ -39,7 +69,7 @@ app.use('/home', home);
 app.use('/register', register);
 app.use('/logout', logout);
 
-// ERROR HANDLERS
+// ---------------- ERROR HANDLERS ---------------- //
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

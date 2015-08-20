@@ -1,13 +1,20 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var csrf = require('csurf');
 var mongoModels = require('../mongo/models');
 var bcrypt = require('bcryptjs');
 
 var router = express.Router();
 
+// Use csrf for Cross-Site Request Forgery Protection
+// It generates a new token every time the register page is loaded.
+// The form submitted should have this unique token.
+
+router.use(csrf());
+
 // GET request handler on /register
 router.get('/', function(req, res, next) {
-  res.render('register', { title: 'Register' });
+  res.render('register', { title: 'Register', csrfToken: req.csrfToken() });
 });
 
 // POST request handler on /register

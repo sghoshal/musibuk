@@ -24,7 +24,7 @@ router.post('/', function(req, res, next) {
         var errorMsg1 = "Incorrect Email or Password";
 
         if(!user) {
-            res.render('index', { title: 'Login', errorMsg: errorMsg1 });
+            res.render('index', { title: 'Login', errorMsg: errorMsg1, csrfToken: req.csrfToken() });
         }
         else {
             if(bcrypt.compareSync(req.body.password, user.password)) {
