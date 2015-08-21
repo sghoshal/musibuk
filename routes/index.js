@@ -4,9 +4,7 @@ var csrf = require('csurf');
 var router = express.Router();
 
 // Use csrf for Cross-Site Request Forgery Protection
-// It generates a new token every time the register page is loaded.
-// The form submitted should have this unique token.
-
+// Generates a new token each time the login page is refreshed.
 router.use(csrf());
 
 /* GET home page. */
