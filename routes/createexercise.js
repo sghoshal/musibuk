@@ -6,17 +6,17 @@ var router = express.Router();
 router.use(csrf());
 
 function requireLogin(req, res, next) {
-    if (!req.user) {
+    if(!req.user) {
         res.redirect('..');
     }
     else {
-        console.log('Route: requireLogin. Found session user: %s', req.session.user);
+        console.log('Route: createexercise. Found session user: %s', req.user);
         next();
     }
 }
 
-router.get('/', requireLogin, function(req, res, next) {
-    res.render('home', { title: 'Home' , csrfToken: req.csrfToken() });
+router.post('/', requireLogin, function(req, res, next) {
+    res.render('home', { title: req.body.exerciseName, 'csrfToken': req.csrfToken() } );
 });
 
 module.exports = router;

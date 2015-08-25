@@ -17,6 +17,7 @@ var home = require('./routes/home');
 var login = require('./routes/login');
 var register = require('./routes/register');
 var logout = require('./routes/logout');
+var createexercise = require('./routes/createexercise');
 
 var app = express();
 
@@ -44,7 +45,7 @@ app.use(sessions( {
 // Middleware for session handling.
 app.use(function(req, res, next) {
     if(req.session && req.session.user) {
-        console.log('app.js App details: %s', req.session.user);
+        console.log('app.js Session details: %s', req.session.user);
 
         mongoModel.UserModel.findOne({ email: req.session.user.email }, function(err, user) {
             if(user) {
@@ -68,6 +69,7 @@ app.use('/login', login);
 app.use('/home', home);
 app.use('/register', register);
 app.use('/logout', logout);
+app.use('/createexercise', createexercise);
 
 // ---------------- ERROR HANDLERS ---------------- //
 
