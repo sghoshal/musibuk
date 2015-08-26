@@ -7,10 +7,21 @@
     <div class="container">
       <h2>Welcome <%= user.firstName %></h2>
 
+      <% if (locals.errorMsg) {%>
+        <p><%= errorMsg %></p>
+      <% } %>
+
+      <!-- Create new exercise, folder or stack -->
+        
       <div class="row" id="create-actions">
+          
+        <!-- Create new exercise. -->
+          
         <div class="col-sm-2">
           <a href="#newExerciseModal" role="button" data-toggle="modal" class="btn btn-large btn-danger">New exercise</a>
 
+          <!-- Modal definition for New exercise button click -->
+            
           <div class="modal fade" id="newExerciseModal">
             <div class="modal-dialog modal-sm">
               <div class="modal-content">
@@ -35,8 +46,8 @@
                 </div>  
               </div>
             </div>
-
           </div><!-- end New Exercise Modal -->
+            
         </div><!-- end col-sm-2 -->
 
         <div class="col-sm-2">
@@ -53,18 +64,14 @@
       <div class="col-sm-6">
         <h4>Your Exercises</h4>
         <div class="list-group">
-          <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Kale</h4>
-            <p class="list-group-item-text">Kale or borecole is a vegetable with green or purple leaves, in which the central leaves do not form a head.</p>
-          </a>
-          <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Carrots</h4>
-            <p class="list-group-item-text">The carrot is a root vegetable, usually orange in colour, though purple, red, white, and yellow varieties exist. It has a crisp texture when fresh.</p>
-          </a>
-          <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Steel-cut oats</h4>
-            <p class="list-group-item-text">Steel-cut oats are whole grain groats which have been cut into pieces. They are commonly used in Scotland and Ireland to make porridge.</p>
-          </a>
+          <% if (locals.allExercises) { %>
+              <% allExercises.forEach(function(eachExercise) {%>
+                <a href="#" class="list-group-item">
+                  <h4 class="list-group-item-heading"><%= eachExercise.name %></h4>
+                </a>
+              <% }); %>
+          <% } %>
+         
         </div><!-- list-group -->
       </div>
     </div>

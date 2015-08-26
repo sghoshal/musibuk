@@ -8,11 +8,10 @@ var sessions = require('client-sessions');
 var mongoModel = require('./mongo/models');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/users');
+mongoose.connect('mongodb://localhost/musibuk');
 
 // Define all the routes.
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var home = require('./routes/home');
 var login = require('./routes/login');
 var register = require('./routes/register');
@@ -47,7 +46,7 @@ app.use(function(req, res, next) {
     if(req.session && req.session.user) {
         console.log('app.js Session details: %s', req.session.user);
 
-        mongoModel.UserModel.findOne({ email: req.session.user.email }, function(err, user) {
+        mongoModel.User.findOne({ email: req.session.user.email }, function(err, user) {
             if(user) {
                 req.user = user;
                 delete req.user.password;
@@ -64,7 +63,6 @@ app.use(function(req, res, next) {
 
 // All routes.
 app.use('/', routes);
-app.use('/users', users);
 app.use('/login', login);
 app.use('/home', home);
 app.use('/register', register);

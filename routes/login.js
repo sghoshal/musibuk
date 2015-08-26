@@ -18,14 +18,8 @@ router.use(sessions( {
     activeDuration: 5 * 60 * 1000
 }));
 
-function redirect_to_home (req, res){
-    console.log("Session started. Redirecting user to home page");
-    res.writeHead(301, {Location: '/home'});
-    res.end();
-}
-
 router.post('/', function(req, res, next) {
-    mongoModels.UserModel.findOne({ email: req.body.email }, function(err, user) {
+    mongoModels.User.findOne({ email: req.body.email }, function(err, user) {
         var errorMsg1 = "Incorrect Email or Password";
 
         if(!user) {

@@ -20,7 +20,7 @@ router.post('/', function(req, res) {
 
     var passwordHash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 
-    var userModel = new mongoModels.UserModel({
+    var user = new mongoModels.User({
 
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -28,7 +28,7 @@ router.post('/', function(req, res) {
         password: passwordHash
     });
 
-    userModel.save(function(err, user) {
+    user.save(function(err, user) {
         if(err) {
             var error = 'Something bad happened! Try again!';
             if(err.code === 11000) {
@@ -41,7 +41,7 @@ router.post('/', function(req, res) {
                             user.firstName, user.lastName, user.email, user.password);
             res.redirect('..')
         }
-    })
+    });
 })
 
 module.exports = router;
