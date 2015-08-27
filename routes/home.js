@@ -19,7 +19,7 @@ function requireLogin(req, res, next) {
 
 router.get('/', requireLogin, function(req, res, next) {
     
-    mongoModel.Exercise.find(function(err, allExercises) {
+    mongoModel.Exercise.find({ 'user_id': req.user.email }, function(err, allExercises) {
         if(err) {
             console.log('home.js: Could not fetch all exercises.');
         }

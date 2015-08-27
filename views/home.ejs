@@ -5,7 +5,7 @@
   </head>
   <body>
     <div class="container">
-      <h2>Welcome <%= user.firstName %></h2>
+      <h2>Welcome <%= user.firstName %>!</h2>
 
       <% if (locals.errorMsg) {%>
         <p><%= errorMsg %></p>
@@ -32,7 +32,8 @@
 
                 <div class="modal-body">
                   <form action="/createexercise" method="post" class="form-horizontal">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" > 
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <input type="hidden" name="folderName" value="root" > 
                     <div class="form-group">
                       <label class="col-md-2 control-label" for="inputName">Name</label>
                       <div class="col-lg-10">

@@ -18,8 +18,13 @@ function requireLogin(req, res, next) {
 }
 
 router.post('/', requireLogin, function(req, res, next) {
+
+    console.log('Folder: %s', req.body.folderName);
+
     var exercise = new mongoModel.Exercise({
-        name: req.body.exerciseName,
+        user_id:    req.user.email,
+        name:       req.body.exerciseName,
+        folder:     req.body.folderName
     });
     
     // TODO: Needs refactoring from callback hell.
@@ -34,7 +39,7 @@ router.post('/', requireLogin, function(req, res, next) {
             
             console.log('Error in creating exercise: %s', req.body.exerciseName );
             
-            mongoModel.Exercise.find(function(err, allExercises) {
+            mongoModel.Exercise.find({ 'user_id': req.user.email }, function(err, allExercises) {
                 if(err) {
                     console.log('Could not retrieve all exercise from Mongo DB');
                 }
@@ -48,7 +53,7 @@ router.post('/', requireLogin, function(req, res, next) {
             });
         }
         else {
-            mongoModel.Exercise.find(function(err, allExercises) {
+            mongoModel.Exercise.find({ 'user_id': req.user.email }, function(err, allExercises) {
                 if(err) {
                     console.log('Could not retrieve all exercise from Mongo DB');
                 }
