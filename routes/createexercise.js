@@ -7,17 +7,7 @@ var router = express.Router();
 
 router.use(csrf());
 
-function requireLogin(req, res, next) {
-    if(!req.user) {
-        res.redirect('..');
-    }
-    else {
-        console.log('Route: createexercise. Found session user: %s', req.user);
-        next();
-    }
-}
-
-router.post('/', requireLogin, function(req, res, next) {
+router.post('/', function(req, res, next) {
 
     console.log('Folder: %s', req.body.folderName);
 

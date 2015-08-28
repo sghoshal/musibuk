@@ -20,9 +20,40 @@ var createexercise = require('./routes/createexercise');
 
 var app = express();
 
-// view engine setup
+function requireLogin(req, res, next) {
+    if(!req.user) {
+        res.redirect('/');
+    }
+    else {
+        console.log('Route: createexercise. Found session user: %s', req.user);
+        next();
+    }
+}
+
+function handleSession(req, res, next) {
+    if(req.session && req.session.user) {
+        console.log('app.js Session details: %s', req.session.user);
+
+        mongoModel.User.findOne({ email: req.session.user.email }, function(err, user) {
+            if(user) {
+                req.user = user;
+                delete req.user.password;
+                req.session.user = user;
+                res.locals.user = req.user;
+            }
+            next();     // Pass the control to the next handler.
+        });
+    }
+    else {
+        next();
+    }
+}
+
+// view engine setup. Use EJS over Jade. That way I can use HTML.
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// Third Party Middleware
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -41,31 +72,22 @@ app.use(sessions( {
     activeDuration: 5 * 60 * 1000
 }));
 
-// Middleware for session handling.
-app.use(function(req, res, next) {
-    if(req.session && req.session.user) {
-        console.log('app.js Session details: %s', req.session.user);
+// Use the defined middleware for session handling.
+app.use(handleSession);
 
-        mongoModel.User.findOne({ email: req.session.user.email }, function(err, user) {
-            if(user) {
-                req.user = user;
-                delete req.user.password;
-                req.session.user = user;
-                res.locals.user = req.user;
-            }
-            next();     // Pass the control to the next handler.
-        });
-    }
-    else {
-        next();
-    }
-});
-
-// All routes.
+// These routes don't require Login. 
+// They have to be used first so that they get the first dibs in serving the request
+// and don't have to use requireLogin middleware.
 app.use('/', routes);
 app.use('/login', login);
-app.use('/home', home);
 app.use('/register', register);
+
+// User defined middleware
+app.use(requireLogin);
+
+// All other routes here on are protected and need requireLogin to be invoked first 
+// if the req is not authorized.
+app.use('/home', home);
 app.use('/logout', logout);
 app.use('/createexercise', createexercise);
 
@@ -101,6 +123,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

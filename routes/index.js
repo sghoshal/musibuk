@@ -9,7 +9,13 @@ router.use(csrf());
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Musibuk - Login', csrfToken: req.csrfToken() });
+    if(req.user) {
+        console.log('XXXX')
+        res.redirect('/home');
+    }
+    else {
+        res.render('index', { title: 'Musibuk - Login', csrfToken: req.csrfToken() });
+    }
 });
 
 module.exports = router;

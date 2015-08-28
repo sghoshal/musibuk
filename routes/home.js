@@ -7,17 +7,7 @@ var router = express.Router();
 
 router.use(csrf());
 
-function requireLogin(req, res, next) {
-    if (!req.user) {
-        res.redirect('..');
-    }
-    else {
-        console.log('Route: requireLogin. Found session user: %s', req.session.user);
-        next();
-    }
-}
-
-router.get('/', requireLogin, function(req, res, next) {
+router.get('/', function(req, res, next) {
     
     mongoModel.Exercise.find({ 'user_id': req.user.email }, function(err, allExercises) {
         if(err) {

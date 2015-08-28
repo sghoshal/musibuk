@@ -11,13 +11,6 @@ var router = express.Router();
 // Generates a new token each time the login page is refreshed.
 router.use(csrf());
 
-router.use(sessions( {
-    cookieName: 'session',
-    secret: 'asdkjbasfkjnwefoqiwer',
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000
-}));
-
 router.post('/', function(req, res, next) {
     mongoModels.User.findOne({ email: req.body.email }, function(err, user) {
         var errorMsg1 = "Incorrect Email or Password";
