@@ -27,35 +27,11 @@ router.post('/', function(req, res, next) {
                 errorMsg = 'That exercise name is already taken. Try another!';
             }
             
-            console.log('Error in creating exercise: %s', req.body.exerciseName );
-            
-            mongoModel.Exercise.find({ 'user_id': req.user.email }, function(err, allExercises) {
-                if(err) {
-                    console.log('Could not retrieve all exercise from Mongo DB');
-                }
-                else {
-                    console.log('All exercises: %s', allExercises);
-                    res.render('home', { title: 'Home', 
-                                        'csrfToken': req.csrfToken(),
-                                        'errorMsg': errorMsg,
-                                        'allExercises': allExercises } );
-                }
-            });
+            console.log("%s. Exercise: %s", errorMsg, req.body.exerciseName);
         }
-        else {
-            mongoModel.Exercise.find({ 'user_id': req.user.email }, function(err, allExercises) {
-                if(err) {
-                    console.log('Could not retrieve all exercise from Mongo DB');
-                }
-                else {
-                    console.log('All exercises: %s', allExercises);
-                    res.render('home', { title: 'Home', 
-                                        'csrfToken': req.csrfToken(),
-                                        'allExercises': allExercises } );
-                }
-            });
-            
-        }
+
+        req.flash('errorMsg', errorMsg);
+        res.redirect('../home');
     });
 });
 

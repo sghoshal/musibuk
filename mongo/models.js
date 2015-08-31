@@ -5,7 +5,7 @@ var ObjectId = Schema.ObjectId;
 
 // The actual collection name will be all lower case with an 's' appended
 
-//  collection - 'usermodels'
+// -----  collection - 'usermodels' ----- //
 module.exports.User = mongoose.model('user', new Schema({
     id:         ObjectId,
     firstName:  { type: String, required: '{PATH} is required.' },
@@ -14,7 +14,7 @@ module.exports.User = mongoose.model('user', new Schema({
     password:   { type: String, required: '{PATH} is required.' }
 }));
 
-// collection - 'exercises'
+// ----- collection - 'exercises' ----- //
 var exerciseSchema = new Schema({
     id:         ObjectId,
     user_id:    { type: String, required: '{PATH} is required.' },
@@ -27,3 +27,17 @@ var exerciseSchema = new Schema({
 exerciseSchema.index({ name: 1, folder: 1 }, { unique: true } );
 
 module.exports.Exercise = mongoose.model('exercise', exerciseSchema );
+
+// ----- collection - 'folders' ----- //
+var folderSchema = new Schema({
+    id:         ObjectId,
+    user_id:    { type: String, required: '{PATH} is required.' },
+    name:       { type: String, required: '{PATH} is required.' },
+    exercises:  { type: Array },
+    stack:      { type: String, default: "root" }
+});
+
+// The combination of stack and folder name should be unique.
+folderSchema.index({ name: 1, stack: 1 }, { unique: true });
+
+module.exports.Folder = mongoose.model('folder', folderSchema);

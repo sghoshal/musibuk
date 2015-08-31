@@ -7,7 +7,7 @@
     <div class="container">
       <h2>Welcome <%= user.firstName %>!</h2>
 
-      <% if (locals.errorMsg) {%>
+      <% if (locals.errorMsg !== 'undefined') {%>
         <p><%= errorMsg %></p>
       <% } %>
 
@@ -23,8 +23,10 @@
           <!-- Modal definition for New exercise button click -->
             
           <div class="modal fade" id="newExerciseModal">
-            <div class="modal-dialog modal-sm">
+
+            <div class="modal-dialog modal-md">
               <div class="modal-content">
+
                 <div class="modal-header">
                   <button class="close" data-dismiss="modal">&times;</button>
                   <h4 class="modal-title">Create a new exercise</h4>
@@ -35,16 +37,16 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                     <input type="hidden" name="folderName" value="root" > 
                     <div class="form-group">
-                      <label class="col-md-2 control-label" for="inputName">Name</label>
-                      <div class="col-lg-10">
-                        <input class="form-control" id="exerciseName" name="exerciseName" placeholder="Name" type="text">
+                      <label class="col-md-3 control-label" for="exerciseName">Exercise Name</label>
+                      <div class="col-lg-9">
+                        <input class="form-control" id="exerciseName" name="exerciseName" placeholder="ExerciseName" type="text">
                         <hr>
-                        <button class="btn btn-success pull-right" type="submit">Create!</button>
+                        <button class="btn btn-info pull-right" type="submit">Create!</button>
                       </div>
                     </div>
                   </form>
-
                 </div>  
+
               </div>
             </div>
           </div><!-- end New Exercise Modal -->
@@ -52,12 +54,43 @@
         </div><!-- end col-sm-2 -->
 
         <div class="col-sm-2">
-          <a href="#newFolderModal" target="_blank" class="btn btn-large btn-info">New Folder</a>
+          <a href="#newFolderModal" role="button" data-toggle="modal" class="btn btn-large btn-info">New Folder</a>
+
+          <div class="modal fade" id="newFolderModal">
+
+            <div class="modal-dialog modal-md">
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Create a new folder</h4>
+                </div><!-- end modal-header -->
+
+                <div class="modal-body">
+                  <form action="/createfolder" method="post" class="form-horizontal">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <input type="hidden" name="stackName" value="root" > 
+                    <div class="form-group">
+                      <label class="col-md-3 control-label" for="folderName">Folder Name</label>
+                      <div class="col-lg-9">
+                        <input class="form-control" id="folderName" name="folderName" placeholder="Folder Name" type="text">
+                        <hr>
+                        <button class="btn btn-info pull-right" type="submit">Create!</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>  
+
+              </div>
+            </div>
+          </div><!-- end New Exercise Modal -->
+
         </div><!-- end col-sm-2 -->
 
         <div class="col-sm-2">
           <a href="#newStackModal" target="_blank" class="btn btn-large btn-warning">New Stack</a>
         </div><!-- end col-sm-2 -->
+
       </div><!-- end row -->
 
       <hr>
@@ -65,8 +98,8 @@
       <div class="col-sm-6">
         <h4>Your Exercises</h4>
         <div class="list-group">
-          <% if (locals.allExercises) { %>
-              <% allExercises.forEach(function(eachExercise) {%>
+          <% if (locals.result) { %>
+              <% result.forEach(function(eachExercise) {%>
                 <a href="#" class="list-group-item">
                   <h4 class="list-group-item-heading"><%= eachExercise.name %></h4>
                 </a>

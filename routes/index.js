@@ -10,7 +10,6 @@ router.use(csrf());
 /* GET home page. */
 router.get('/', function(req, res, next) {
     if(req.user) {
-        console.log('XXXX')
         res.redirect('/home');
     }
     else {

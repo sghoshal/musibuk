@@ -5,9 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sessions = require('client-sessions');
+var flash = require('connect-flash');
 var mongoModel = require('./mongo/models');
-
 var mongoose = require('mongoose');
+
 mongoose.connect('mongodb://localhost/musibuk');
 
 // Define all the routes.
@@ -17,6 +18,7 @@ var login = require('./routes/login');
 var register = require('./routes/register');
 var logout = require('./routes/logout');
 var createexercise = require('./routes/createexercise');
+var createfolder = require('./routes/createfolder');
 
 var app = express();
 
@@ -75,6 +77,8 @@ app.use(sessions( {
 // Use the defined middleware for session handling.
 app.use(handleSession);
 
+app.use(flash());
+
 // These routes don't require Login. 
 // They have to be used first so that they get the first dibs in serving the request
 // and don't have to use requireLogin middleware.
@@ -90,6 +94,7 @@ app.use(requireLogin);
 app.use('/home', home);
 app.use('/logout', logout);
 app.use('/createexercise', createexercise);
+app.use('/createfolder', createfolder);
 
 // ---------------- ERROR HANDLERS ---------------- //
 
