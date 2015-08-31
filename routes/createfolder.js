@@ -12,10 +12,14 @@ router.post('/', function(req, res, next) {
     console.log('Folder Name: %s and stack: %s', req.body.folderName, req.body.stackName);
 
     var folder = new mongoModel.Folder({ 
-        user_id: req.user.email,
-        name: req.body.folderName,
-        stack: req.body.stackName, 
-        exercises: [] 
+        user_id:        req.user.email,
+        name:           req.body.folderName,
+        stack:          req.body.stackName, 
+        exercises:      [],
+        stack:          "root",
+        createdTime:    new Date(),
+        lastUpdated:    new Date(),
+        timePracticed:  0
     });
 
     folder.save(function(err, folder) {
@@ -30,7 +34,7 @@ router.post('/', function(req, res, next) {
         }
         req.flash('errorMsg', errorMsg);
         res.redirect('../home');
-    });    
+    });
 });
 
 module.exports = router;

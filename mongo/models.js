@@ -15,12 +15,25 @@ module.exports.User = mongoose.model('user', new Schema({
 }));
 
 // ----- collection - 'exercises' ----- //
+
+var historySchema = new Schema({
+    date: Date,
+    timeStarted: Date,
+    practiceTime: Number,
+    startBpm: Number,
+    endBpm: Number
+});
+
 var exerciseSchema = new Schema({
-    id:         ObjectId,
-    user_id:    { type: String, required: '{PATH} is required.' },
-    name:       { type: String, required: '{PATH} is required.' },
-    bpm:        { type: Number, default: 80 },
-    folder:     { type: String, default: "root" }
+    id:             ObjectId,
+    user_id:        { type: String, required: '{PATH} is required.' },
+    name:           { type: String, required: '{PATH} is required.' },
+    bpm:            { type: Number, required: '{PATH} is required.', default: 80 },
+    folderId:       { type: String, required: '{PATH} is required.' },
+    createdTime:    { type: Date, required: '{PATH} is required.', default: new Date() },
+    lastUpdated:    { type: Date, required: '{PATH} is required.', default: new Date() },
+    timePracticed:  { type: Number, default: 0 },
+    history:        [ historySchema ]
 });
 
 // The combination of exercise name and the folder name should be unique.
@@ -30,11 +43,14 @@ module.exports.Exercise = mongoose.model('exercise', exerciseSchema );
 
 // ----- collection - 'folders' ----- //
 var folderSchema = new Schema({
-    id:         ObjectId,
-    user_id:    { type: String, required: '{PATH} is required.' },
-    name:       { type: String, required: '{PATH} is required.' },
-    exercises:  { type: Array },
-    stack:      { type: String, default: "root" }
+    id:                 ObjectId,
+    user_id:            { type: String, required: '{PATH} is required.' },
+    name:               { type: String, required: '{PATH} is required.' },
+    exercises:          { type: Array },
+    stack:              { type: String, default: "root" },
+    createdTime:        { type: Date, required: '{PATH} is required.', default: new Date() },
+    lastUpdated:        { type: Date, required: '{PATH} is required.', default: new Date() },
+    timePracticedToday: { type: Number, default: 0 }
 });
 
 // The combination of stack and folder name should be unique.

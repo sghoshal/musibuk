@@ -27,7 +27,6 @@ function requireLogin(req, res, next) {
         res.redirect('/');
     }
     else {
-        console.log('Route: createexercise. Found session user: %s', req.user);
         next();
     }
 }
