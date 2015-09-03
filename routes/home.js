@@ -22,7 +22,7 @@ router.get('/', fetchUserInfoAndRenderHomePage);
 
 function fetchUserInfoAndRenderHomePage(req, res, next) {
     result = [];
-    mongoModel.Exercise.find({ 'user_id': req.user.email }, onFetchAllExercises);
+    mongoModel.Exercise.find({ 'user_id': req.user.email, "folderId": "root" }, onFetchAllExercises);
 
     function onFetchAllExercises(err, allExercises) {
         if(err) {
@@ -44,7 +44,9 @@ function fetchUserInfoAndRenderHomePage(req, res, next) {
             result = result.concat(allFolders);
 
             // Here we can call renderHomePage with req, res, next because
-            // those variables are in the outer function.l
+            // those variables are paramters of the outer function. During 
+            // callback execution, this function still has reference to
+            // req, res, next.
             renderHomePage(req, res, next);
         }
     }

@@ -18,6 +18,7 @@ router.post('/', function(req, res, next) {
     var exercise = new mongoModel.Exercise({
         user_id:        req.user.email,
         name:           req.body.exerciseName,
+        entryType:      "exercise",
         bpm:            80,
         folderId:       req.body.folderName,
         createdTime:    new Date(),

@@ -14,6 +14,7 @@ router.post('/', function(req, res, next) {
     var folder = new mongoModel.Folder({ 
         user_id:        req.user.email,
         name:           req.body.folderName,
+        entryType:      "folder",
         stack:          req.body.stackName, 
         exercises:      [],
         stack:          "root",

@@ -19,6 +19,7 @@ var register = require('./routes/register');
 var logout = require('./routes/logout');
 var createexercise = require('./routes/createexercise');
 var createfolder = require('./routes/createfolder');
+var folder = require('./routes/folder');
 
 var app = express();
 
@@ -94,6 +95,8 @@ app.use('/home', home);
 app.use('/logout', logout);
 app.use('/createexercise', createexercise);
 app.use('/createfolder', createfolder);
+app.use('/folder', folder);
+
 
 // ---------------- ERROR HANDLERS ---------------- //
 

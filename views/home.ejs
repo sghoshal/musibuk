@@ -6,10 +6,18 @@
   <body>
     <div class="container">
       <h2>Welcome <%= user.firstName %>!</h2>
+      
+      <hr>
 
       <% if (locals.errorMsg !== 'undefined') {%>
         <p><%= errorMsg %></p>
       <% } %>
+
+      <div class="row" id="homeBreadCrumb" >
+        <ol class="breadcrumb">
+          <li><a href="/home">Home</a></li>
+        </ol>
+      </div>
 
       <!-- Create new exercise, folder or stack -->
         
@@ -17,8 +25,8 @@
           
         <!-- Create new exercise. -->
           
-        <div class="col-sm-2">
-          <a href="#newExerciseModal" role="button" data-toggle="modal" class="btn btn-large btn-danger">New exercise</a>
+        <div class="col-md-2">
+          <a href="#newExerciseModal" role="button" data-toggle="modal" class="btn btn-block btn-danger">New exercise</a>
 
           <!-- Modal definition for New exercise button click -->
             
@@ -38,7 +46,7 @@
                     <input type="hidden" name="folderName" value="root" > 
                     <div class="form-group">
                       <label class="col-md-3 control-label" for="exerciseName">Exercise Name</label>
-                      <div class="col-lg-9">
+                      <div class="col-md-9">
                         <input class="form-control" id="exerciseName" name="exerciseName" placeholder="ExerciseName" type="text">
                         <hr>
                         <button class="btn btn-info pull-right" type="submit">Create!</button>
@@ -53,8 +61,8 @@
             
         </div><!-- end col-sm-2 -->
 
-        <div class="col-sm-2">
-          <a href="#newFolderModal" role="button" data-toggle="modal" class="btn btn-large btn-info">New Folder</a>
+        <div class="col-md-2">
+          <a href="#newFolderModal" role="button" data-toggle="modal" class="btn btn-block btn-info">New Folder</a>
 
           <div class="modal fade" id="newFolderModal">
 
@@ -72,7 +80,7 @@
                     <input type="hidden" name="stackName" value="root" > 
                     <div class="form-group">
                       <label class="col-md-3 control-label" for="folderName">Folder Name</label>
-                      <div class="col-lg-9">
+                      <div class="col-md-9">
                         <input class="form-control" id="folderName" name="folderName" placeholder="Folder Name" type="text">
                         <hr>
                         <button class="btn btn-info pull-right" type="submit">Create!</button>
@@ -87,28 +95,48 @@
 
         </div><!-- end col-sm-2 -->
 
-        <div class="col-sm-2">
-          <a href="#newStackModal" target="_blank" class="btn btn-large btn-warning">New Stack</a>
+        <div class="col-md-2">
+          <a href="#newStackModal" target="_blank" class="btn btn-block btn-warning">New Stack</a>
         </div><!-- end col-sm-2 -->
 
       </div><!-- end row -->
 
-      <hr>
+      <div class="row" id="homePageHeading">
+        <div class="col-6-md">
+          <h3>Your exercises</h3>
+        </div><!-- end col-12 -->
+      </div><!-- end homePageHeading -->
 
-      <div class="col-sm-6">
-        <h4>Your Exercises</h4>
-        <div class="list-group">
-          <% if (locals.result) { %>
+      <div class="row" id="homePageContent">
+        <div class="col-sm-6">
+          <div class="list-group">
+
+            <!-- Process the results passed by the route -->
+            <% if (locals.result) { %>
               <% result.forEach(function(eachExercise) {%>
-                <a href="#" class="list-group-item">
-                  <h4 class="list-group-item-heading"><%= eachExercise.name %></h4>
-                </a>
+
+                <!-- If the entry is of type folder, display a folder glyphicon -->
+                <% if (eachExercise.entryType === 'folder') { %>
+                  <a href="/folder/<%= eachExercise._id%>" id="folderEntry" class="list-group-item">
+                    <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;&nbsp;<%= eachExercise.name %></h4>
+                  </a>
+                <% } %>
+
+                <!-- If the entry is of type exercise, display a music glyphicon -->
+                <% if (eachExercise.entryType === 'exercise') { %>
+                  <a href="/exercise/<%= eachExercise._id%>" class="list-group-item">
+                    <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-music"></span>&nbsp;&nbsp;&nbsp;<%= eachExercise.name %></h4>
+                  </a>
+                <% } %>
+
               <% }); %>
-          <% } %>
+            <% } %>
          
-        </div><!-- list-group -->
-      </div>
+          </div><!-- list-group -->
+        </div><!-- end col-sm-6 -->
+      </div><!-- end row -->
     </div>
+
     <% include scripts-ext %>
     <script src="javascripts/global.js"></script>
   </body>

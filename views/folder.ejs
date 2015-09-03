@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include head %>
+  </head>
+  <body>
+    <div id="main" class="container">
+      <h2>Welcome <%= user.firstName %>!</h2>
+      
+      <hr>
+
+      <% if (locals.errorMsg !== 'undefined') {%>
+        <p><%= errorMsg %></p>
+      <% } %>
+
+      <div class="row" id="homeBreadCrumb" >
+        <ol class="breadcrumb">
+          <li><a href="/home">Home</a></li>
+          <li><a href="/folder/<%= folderId %>"><%= folderName %></a></li>
+        </ol>
+      </div>
+
+
+      <div class="row">
+          <div class="col-md-2">
+            <a href="#newExerciseInFolderModal" role="button" class="btn btn-info btn-block" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New Exercise</a>
+
+            <div class="modal fade" id="newExerciseInFolderModal">
+
+              <div class="modal-dialog modal-md">
+                <div class="modal-content">
+
+                  <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New exercise in <%= folderName %></h4>
+                  </div><!-- end modal-header -->
+
+                  <div class="modal-body">
+                    <form action="/folder" method="post" class="form-horizontal">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                      <input type="hidden" name="folderName" value="<%= folderName %>" > 
+                      <input type="hidden" name="folderId" value="<%= folderId %>" > 
+                      <div class="form-group">
+                        <label class="col-md-3 control-label" for="exerciseInFolderName">Exercise Name</label>
+                        <div class="col-md-9">
+                          <input class="form-control" name="exerciseInFolderName" placeholder="Exercise Name" type="text">
+                          <hr>
+                          <button class="btn btn-info pull-right" type="submit">Create!</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                </div><!-- end modal-content -->
+              </div><!-- end modal-dialog -->
+            </div><!-- end New Exercise Modal -->
+        </div>
+      </div>
+      
+
+      <div class="row" id="homePageContent">
+        <div class="col-sm-6">
+          <div class="list-group">
+
+            <!-- Process the results passed by the route -->
+            <% if (locals.exercises) { %>
+              <% exercises.forEach(function(eachExercise) {%>
+                <a href="/exercise/<%= eachExercise._id%>" class="list-group-item">
+                  <h4 class="list-group-item-heading"><span class="glyphicon glyphicon-music"></span>&nbsp;&nbsp;&nbsp;<%= eachExercise.name %></h4>
+                </a>
+              <% }); %>
+            <% } %>
+         
+          </div><!-- list-group -->
+        </div><!-- end col-sm-6 -->
+      </div><!-- end row -->
+
+    <% include scripts-ext %>
+    <script src="/javascripts/global.js"></script>
+  </body>
+</html>
