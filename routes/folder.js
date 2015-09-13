@@ -82,6 +82,9 @@ function createExerciseInFolder(req, res, next) {
             if(err.code === 11000) {
                 errorMsg = 'That exercise name is already taken in this folder. Try another!';
             }
+
+            req.flash('errorMsg', errorMsg);
+            res.redirect(req.get('referer'));
         }
         else {
             console.log("Created exercise - %s. Now adding this exercise entry to folder", exercise);

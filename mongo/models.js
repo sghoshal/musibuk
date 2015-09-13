@@ -38,7 +38,7 @@ var exerciseSchema = new Schema({
 });
 
 // The combination of exercise name and the folder name should be unique.
-exerciseSchema.index({ name: 1, folder: 1 }, { unique: true } );
+exerciseSchema.index({ user_id: 1, name: 1, folder: 1 }, { unique: true } );
 
 module.exports.Exercise = mongoose.model('exercise', exerciseSchema );
 
@@ -56,6 +56,6 @@ var folderSchema = new Schema({
 });
 
 // The combination of stack and folder name should be unique.
-folderSchema.index({ name: 1, stack: 1 }, { unique: true });
+folderSchema.index({ user_id: 1, name: 1, stack: 1 }, { unique: true });
 
 module.exports.Folder = mongoose.model('folder', folderSchema);
