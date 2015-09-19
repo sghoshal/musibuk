@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include head %>
+    <style>
+      body {
+        font-family: 'Source Serif Pro', serif;
+        font-size: 1.5em;
+        line-height: 1.4;
+        color: #444;
+        margin: 0;
+      }
+      .hidden {
+        display: none;
+      }
+      .hero {
+        background-color: #3c7fc1;
+        color: white;
+      }
+      .hero h1 {
+        margin: 0;
+        padding: 30px 40px;
+      }
+      .content {
+        margin: 30px 40px;
+        max-width: 500px;
+      }
+      .control {
+        font-weight: bold;
+      }
+      .control:hover {
+        cursor: pointer;
+      }
+      a {
+        text-decoration: none;
+        font-weight: bold;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <% include scripts-ext %>
+
+    <div class="container">
+      <h3>Exercise page!</h3>
+      
+
+      <div class="col-md-2">
+        <button type="button" id="metronome-play" class="btn btn-primary btn-block">
+          <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <button type="button" id="metronome-pause" class="btn btn-primary btn-block">
+          <span class="glyphicon glyphicon-pause"></span>
+        </button>
+      </div>
+
+      <p>A minimalist boombap beat made using <a href="https://www.npmjs.com/package/dilla">Dilla</a> and Web Audio to schedule notes with precise rhythmic timing.</p>
+
+      <p><a href="http://adamrenklint.com/making-boombap-beat-with-dilla">Read the tutorial</a> or <a href="https://github.com/adamrenklint/dilla-boombap-demo">check out the code</a>.</p>
+
+      <p>Made by <a href="http://adamrenklint.com">Adam Renklint</a> in March 2015. Props to <a href="https://github.com/octatone">Raymond May Jr</a> for helping with the bass.</p>
+
+      <p>
+        Playback position: <span id="position">0.0.00</span><br>
+        <span id="loading" class="control">Loading sounds...</span>
+        <a id="play" class="control hidden">Start playback</a>
+        <a id="stop" class="control hidden">Stop playback</a>
+      </p>
+        
+    </div>
+    <script src="/javascripts/global.js"></script>
+    <script src="/javascripts/bundle.js"></script>
+  </body>
+</html>

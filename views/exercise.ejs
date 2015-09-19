@@ -7,19 +7,23 @@
     <% include scripts-ext %>
 
     <div class="container">
-      <h3>Metronome page!</h3>
+      <h3><%= exerciseName %></h3>
       
-      <div class="col-md-2">
-        <button type="button" id="metronome-play" class="btn btn-primary btn-block">
-          <span class="glyphicon glyphicon-play"></span>
-        </button>
-        <button type="button" id="metronome-pause" class="btn btn-primary btn-block">
-          <span class="glyphicon glyphicon-pause"></span>
-        </button>
-
-      </div>
+      <% if (typeof folderName !== 'undefined') {%>
+        <div class="row" id="homeBreadCrumb" >
+          <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/folder/<%= folderId %>"><%= folderName %></a></li>
+          </ol>
+        </div>
+      <% } else { %>
+        <div class="row" id="homeBreadCrumb" >
+          <ol class="breadcrumb">
+            <li><a href="/home">Home</a></li>
+          </ol>
+        </div>
+      <% } %>
 
     <script src="/javascripts/global.js"></script>
-    <script src="/javascripts/bundle.js"></script>
   </body>
 </html>
