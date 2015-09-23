@@ -2,14 +2,18 @@ var express = require('express');
 var mongoose = require('mongoose');
 var mongoModel = require('../mongo/models');
 
-var result = [];
-
 var router = express.Router();
+
+var result = [];
 
 function renderPage(req, res, next, exercise, folderName, folderId) {
     console.log('Rendering page now. Ex Name: %s, Folder Name: %s', exercise.name, folderName);
     res.render('exercise', {
+        "exerciseId": exercise._id.toString(),
         "exerciseName": exercise.name,
+        "createdDate": exercise.createdTime,
+        "lastPracticed": exercise.lastUpdated,
+        "bpm": exercise.bpm,
         "folderName": folderName,
         "folderId": folderId
     });

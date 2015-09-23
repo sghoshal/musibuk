@@ -21,6 +21,7 @@ var createexercise = require('./routes/createexercise');
 var createfolder = require('./routes/createfolder');
 var folder = require('./routes/folder');
 var exercise = require('./routes/exercise');
+var setExerciseBpm = require('./routes/setExerciseBpm');
 
 var app = express();
 
@@ -98,6 +99,7 @@ app.use('/createexercise', createexercise);
 app.use('/createfolder', createfolder);
 app.use('/folder', folder);
 app.use('/exercise', exercise);
+app.use('/setExerciseBpm', setExerciseBpm);
 
 // ---------------- ERROR HANDLERS ---------------- //
 

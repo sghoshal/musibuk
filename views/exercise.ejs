@@ -1,29 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <% include head %>
-  </head>
-  <body>
-    <% include scripts-ext %>
+<head>
+  <% include head %>
+</head>
+<body>
+  <% include scripts-ext %>
 
-    <div class="container">
-      <h3><%= exerciseName %></h3>
-      
-      <% if (typeof folderName !== 'undefined') {%>
-        <div class="row" id="homeBreadCrumb" >
-          <ol class="breadcrumb">
-            <li><a href="/home">Home</a></li>
-            <li><a href="/folder/<%= folderId %>"><%= folderName %></a></li>
-          </ol>
-        </div>
-      <% } else { %>
-        <div class="row" id="homeBreadCrumb" >
-          <ol class="breadcrumb">
-            <li><a href="/home">Home</a></li>
-          </ol>
-        </div>
-      <% } %>
+  <div class="container">
 
-    <script src="/javascripts/global.js"></script>
-  </body>
+    <% if (typeof folderName !== 'undefined') {%>
+    <div class="row" id="homeBreadCrumb" >
+      <ol class="breadcrumb">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/folder/<%= folderId %>"><%= folderName %></a></li>
+        <li><%= exerciseName %></li>
+      </ol>
+    </div>
+    <% } else { %>
+    <div class="row" id="homeBreadCrumb" >
+      <ol class="breadcrumb">
+        <li><a href="/home">Home</a></li>
+        <li><%= exerciseName %></li>
+      </ol>
+    </div>
+    <% } %>
+
+    <div class="col-md-6">
+      <p>Last Practiced: <%= lastPracticed %></p>
+      <p id="bpmText" >BPM: <%= bpm %></p>
+
+      <form id="bpmInputForm" action="/setExerciseBpm">
+        <div class="form-group">
+          <label for="setBpm">Set BPM:</label>
+          <input type="text" class="form-control" name="setBpm" id="inputBpm">
+          <input type="hidden" class="form-control" name="exId" value=<%= exerciseId %>>
+        </div>
+        <input type="submit" class="btn btn-default"></input>
+      </form>
+
+    </div>
+  </div>
+
+  <% include scripts-ext %>
+  <script src="/javascripts/global.js"></script>
+</body>
 </html>

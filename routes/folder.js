@@ -1,12 +1,9 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var csrf = require('csurf');
 
 var mongoModel = require('../mongo/models');
 
 var router = express.Router();
-
-router.use(csrf());
 
 function fetchFolderExercises(req, res, next) {
     var folderId = mongoose.Types.ObjectId(req.params.folderId.toString());
@@ -36,7 +33,6 @@ function renderPage(req, res, next, folder) {
                                        folderName: folder.name,
                                        folderId: folder._id,
                                        exercises: [],
-                                       csrfToken: req.csrfToken(),
                                        errorMsg: req.flash('errorMsg') });
     }
     else {
@@ -50,7 +46,6 @@ function renderPage(req, res, next, folder) {
                                        folderName: folder.name,
                                        folderId: folder._id,
                                        exercises: exercises,
-                                       csrfToken: req.csrfToken(),
                                        errorMsg: req.flash('errorMsg') });
             }
         });

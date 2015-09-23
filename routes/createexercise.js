@@ -1,15 +1,12 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var mongoModel = require('../mongo/models');
-var csrf = require('csurf');
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var router = express.Router();
-
-router.use(csrf());
 
 router.post('/', function(req, res, next) {
 

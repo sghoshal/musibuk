@@ -1,11 +1,8 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var mongoModel = require('../mongo/models');
-var csrf = require('csurf');
 
 var router = express.Router();
-
-router.use(csrf());
 
 router.post('/', function(req, res, next) {
 

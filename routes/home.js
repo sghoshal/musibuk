@@ -1,19 +1,15 @@
 var express = require('express');
-var csrf = require('csurf');
 var mongoose = require('mongoose');
 var mongoModel = require('../mongo/models');
 
 var router = express.Router();
-
-router.use(csrf());
 
 var result = [];
 
 function renderHomePage(req, res, next) {
     console.log("Rendering Home Page with results: %s", result );
 
-    res.render('home', { title: 'Home' , 
-                         csrfToken: req.csrfToken(),
+    res.render('home', { title: 'Home',
                          result: result,
                          errorMsg: req.flash('errorMsg') } );
 }

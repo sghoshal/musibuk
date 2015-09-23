@@ -42,7 +42,6 @@
 
                 <div class="modal-body">
                   <form action="/createexercise" method="post" class="form-horizontal">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                     <input type="hidden" name="folderName" value="root" > 
                     <div class="form-group">
                       <label class="col-md-3 control-label" for="exerciseName">Exercise Name</label>
@@ -76,7 +75,6 @@
 
                 <div class="modal-body">
                   <form action="/createfolder" method="post" class="form-horizontal">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                     <input type="hidden" name="stackName" value="root" > 
                     <div class="form-group">
                       <label class="col-md-3 control-label" for="folderName">Folder Name</label>
