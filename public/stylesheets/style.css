@@ -52,3 +52,20 @@ a {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.form-same-line {
+  float: left;
+}
+
+/* Utility classes for adding top margins */
+.top5 {
+  margin-top: 5px;
+}
+
+.top30 {
+  margin-top: 30px;
+}
+
+.top20 {
+  margin-top: 20px;
+}
