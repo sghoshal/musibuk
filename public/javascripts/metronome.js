@@ -1060,18 +1060,16 @@ function shouldSendImmediately(message, loop){
 
 },{"stream":33,"util":36}],10:[function(require,module,exports){
 
-//var Dilla = require('./metronome-util');
 var Dilla = require('dilla');
-//var audioContext = new (window.AudioContext || window.webkitAudioContext)();
 var audioContext = new AudioContext();
 var dilla = new Dilla(audioContext);
 
 var high = {
   'position': '*.1.01',
   'freq': 440,
-  'duration': 15
+  'duration': 2
 };
-var low = { 'freq': 330, 'duration': 15 };
+var low = { 'freq': 330, 'duration': 2 };
 
 dilla.set('metronome', [
   high,
@@ -1102,7 +1100,12 @@ dilla.on('step', function (step) {
 });
 
 $("#btn-metronome-start").click(function(event) {
+    var currentBpmTempo = $("#currentBpmVal").text();
+    console.log("Current Tempo: %s", currentBpmTempo);
+
+    dilla.setTempo(parseInt(currentBpmTempo));
     console.log("Metronome start button clicked");
+    
     dilla.start();
 });
 

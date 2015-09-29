@@ -23,7 +23,7 @@ router.post('/', function(req, res, next) {
                     console.log("Error in saving exercise: %s with new bpm: %s", exerciseIdString, newBpm);
                 }
                 else {
-                    var returnHtml = '<p id="bpmText">BPM: ' + newBpm + '</p>';
+                    var returnHtml = '<p id="bpmText">Current BPM: <span id="currentBpmVal">' + newBpm + '</span></p>';
                     res.send(returnHtml);
                 }
             });

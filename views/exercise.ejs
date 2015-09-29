@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-md-4">
         <p>Last Practiced: <%= lastPracticed %></p>
-        <p id="bpmText" >Current BPM: <%= bpm %></p>
+        <p id="bpmText" >Current BPM: <span id="currentBpmVal"><%= bpm %></span></p>
 
         <form class="form-inline" id="bpmInputForm" action="/setExerciseBpm">
           <div class="form-group">
@@ -43,15 +43,6 @@
 
     <div class="row top20">
       <div class="col-md-6">
-        <div>Your practice time today: <span id="time"></span></div>
-        <input type="button" class="btn btn-info" value="start" onclick="start();">
-        <input type="button" class="btn btn-info" value="stop" onclick="stop();">
-        <input type="button" class="btn btn-info" value="reset" onclick="reset()">
-      </div>
-    </div>
-
-    <div class="row top20">
-      <div class="col-md-12">
         <p>Metronome: </p>
         <button type="button" class="btn btn-info" id="btn-metronome-start">
           <span class="glyphicon glyphicon-play"></span>
@@ -61,7 +52,15 @@
           <span class="glyphicon glyphicon-pause"></span>
         </button>
       </div>
+    </div>
 
+    <div class="row top20">
+      <div class="col-md-6">
+        <div>Your practice time today: <span id="time"></span></div>
+        <input type="button" class="btn btn-info" value="start" onclick="start();">
+        <input type="button" class="btn btn-info" value="stop" onclick="stop();">
+        <input type="button" class="btn btn-info" value="reset" onclick="reset()">
+      </div>
     </div>
 
 
