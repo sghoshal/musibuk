@@ -29,6 +29,7 @@ var exerciseSchema = new Schema({
     user_id:        { type: String, required: '{PATH} is required.' },
     name:           { type: String, required: '{PATH} is required.' },
     entryType:      { type: String, required: '{PATH} is required.' },
+    notes:          { type: String, default: "" },
     bpm:            { type: Number, required: '{PATH} is required.', default: 80 },
     folderId:       { type: String, required: '{PATH} is required.' },
     createdTime:    { type: Date, required: '{PATH} is required.', default: new Date() },

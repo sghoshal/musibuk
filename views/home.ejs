@@ -42,15 +42,26 @@
 
                 <div class="modal-body">
                   <form action="/createexercise" method="post" class="form-horizontal">
-                    <input type="hidden" name="folderName" value="root" > 
+                    <input type="hidden" name="folderName" value="root" >
+
                     <div class="form-group">
                       <label class="col-md-3 control-label" for="exerciseName">Exercise Name</label>
                       <div class="col-md-9">
                         <input class="form-control" id="exerciseName" name="exerciseName" placeholder="ExerciseName" type="text">
-                        <hr>
-                        <button class="btn btn-info pull-right" type="submit">Create!</button>
                       </div>
                     </div>
+
+                    <div class="form-group">
+                      <label class="col-md-3 control-label" for="exerciseNotes">Notes</label>
+                      <div class="col-md-9">
+                        <textarea class="form-control" name="exerciseNotes" placeholder="Notes about the exercise." rows="3"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer">
+                      <button class="btn btn-default" data-dismiss="modal" type="button">Close</button> <button class="btn btn-info pull-right" type="submit">Create!</button>
+                    </div><!-- end modal-footer -->
+
                   </form>
                 </div>  
 
@@ -75,15 +86,19 @@
 
                 <div class="modal-body">
                   <form action="/createfolder" method="post" class="form-horizontal">
-                    <input type="hidden" name="stackName" value="root" > 
+                    <input type="hidden" name="stackName" value="root" >
+
                     <div class="form-group">
                       <label class="col-md-3 control-label" for="folderName">Folder Name</label>
                       <div class="col-md-9">
                         <input class="form-control" id="folderName" name="folderName" placeholder="Folder Name" type="text">
-                        <hr>
-                        <button class="btn btn-info pull-right" type="submit">Create!</button>
                       </div>
                     </div>
+
+                    <div class="modal-footer">
+                      <button class="btn btn-default" data-dismiss="modal" type="button">Close</button> <button class="btn btn-info pull-right" type="submit">Create!</button>
+                    </div><!-- end modal-footer -->
+
                   </form>
                 </div>  
 

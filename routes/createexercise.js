@@ -10,12 +10,14 @@ var router = express.Router();
 
 router.post('/', function(req, res, next) {
 
-    console.log('Folder: %s', req.body.folderName);
+    console.log('Creating Exercise: %s in Folder: %s with Notes: %s', 
+        req.body.exerciseName, req.body.folderName, req.body.exerciseNotes);
 
     var exercise = new mongoModel.Exercise({
         user_id:        req.user.email,
         name:           req.body.exerciseName,
         entryType:      "exercise",
+        notes:          req.body.exerciseNotes,    
         bpm:            80,
         folderId:       req.body.folderName,
         createdTime:    new Date(),

@@ -34,6 +34,7 @@ $( "#btnExerciseSave" ).click(function(event) {
     });
 });
 
+
 // Javascript functions for Stopwatch for exercise.ejs
 
 //  Simple example of using private variables

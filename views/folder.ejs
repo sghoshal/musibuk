@@ -38,14 +38,24 @@
                     <form action="/folder" method="post" class="form-horizontal">
                       <input type="hidden" name="folderName" value="<%= folderName %>" > 
                       <input type="hidden" name="folderId" value="<%= folderId %>" > 
+
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="exerciseInFolderName">Exercise Name</label>
                         <div class="col-md-9">
                           <input class="form-control" name="exerciseInFolderName" placeholder="Exercise Name" type="text">
-                          <hr>
-                          <button class="btn btn-info pull-right" type="submit">Create!</button>
                         </div>
                       </div>
+
+                      <div class="form-group">
+                        <label class="col-md-3 control-label" for="exerciseInFolderNotes">Notes</label>
+                        <div class="col-md-9">
+                          <textarea class="form-control" name="exerciseInFolderNotes" placeholder="Notes about the exercise." rows="3"></textarea>
+                        </div>
+                      </div>
+
+                      <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal" type="button">Close</button> <button class="btn btn-info pull-right" type="submit">Create!</button>
+                      </div><!-- end modal-footer -->
                     </form>
                   </div>
 

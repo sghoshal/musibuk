@@ -54,7 +54,8 @@ function renderPage(req, res, next, folder) {
 
 function createExerciseInFolder(req, res, next) {
 
-    console.log('Creating Exercise - %s in Folder: %s', req.body.exerciseInFolderName, req.body.folderName);
+    console.log('Creating Exercise - %s in Folder: %s with Notes: %s', 
+        req.body.exerciseInFolderName, req.body.folderName, req.body.exerciseInFolderNotes);
     
     var folderId = req.body.folderId;
 
@@ -62,6 +63,7 @@ function createExerciseInFolder(req, res, next) {
         user_id:        req.user.email,
         name:           req.body.exerciseInFolderName,
         entryType:      "exercise",
+        notes:          req.body.exerciseInFolderNotes,
         bpm:            80,
         folderId:       folderId,
         createdTime:    new Date(),

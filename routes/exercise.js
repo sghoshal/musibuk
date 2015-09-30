@@ -8,12 +8,14 @@ var result = [];
 
 function renderPage(req, res, next, exercise, folderName, folderId) {
     console.log('Rendering page now. Ex Name: %s, Folder Name: %s', exercise.name, folderName);
+    
     res.render('exercise', {
         "exerciseId": exercise._id.toString(),
         "exerciseName": exercise.name,
         "createdDate": exercise.createdTime,
         "lastPracticed": exercise.lastUpdated,
         "bpm": exercise.bpm,
+        "notes": exercise.notes,
         "folderName": folderName,
         "folderId": folderId
     });

@@ -25,34 +25,62 @@
     </div>
     <% } %>
 
-    <div class="row">
-      <div class="col-md-4">
-        <p>Last Practiced: <%= lastPracticed %></p>
-        <p id="bpmText" >Current BPM: <span id="currentBpmVal"><%= bpm %></span></p>
 
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="well">
+          <p class="lead"><%= exerciseName %></p>
+
+          <table class="table">
+            <tr>
+              <td>Last Practiced</td>
+              <td><%= lastPracticed %></td>
+            </tr>
+            <tr>
+              <td>Notes</td>
+              <td><%= notes %></td>
+            </tr>
+          </table>
+        </div><!-- end well -->
+
+        
+      </div>
+    </div> <!-- end row -->
+
+    <hr>
+    
+    <div class="row top10">
+
+      <div class="col-md-3">
+        <p id="bpmText" >Current BPM: <span id="currentBpmVal"><%= bpm %></span></p>
+      </div>
+
+      <div class="col-md-3">
+        <p>Metronome: 
+          <button type="button" class="btn btn-info" id="btn-metronome-start">
+            <span class="glyphicon glyphicon-play"></span>
+          </button>
+
+          <button type="button" class="btn btn-info" id="btn-metronome-stop">
+            <span class="glyphicon glyphicon-pause"></span>
+          </button>
+        </p>
+      </div>
+
+      <div class="col-md-3">
         <form class="form-inline" id="bpmInputForm" action="/setExerciseBpm">
           <div class="form-group">
             <label for="setBpm">Set BPM:</label>
-            <input type="text" class="form-control" name="setBpm" placeholder="120" id="inputBpm">
+            <input type="text" class="form-control" name="setBpm" size="6" maxLength="3" placeholder="Eg. 120" id="inputBpm">
           </div>
           <input type="hidden" class="form-control" name="exId" value=<%= exerciseId %>>
-          <input type="submit" class="btn btn-info" style="float: right"></input>
+          <input type="submit" class="btn btn-info" style="float right"></input>
         </form>
       </div>
-    </div>
+    </div> <!-- end row -->
 
-    <div class="row top20">
-      <div class="col-md-6">
-        <p>Metronome: </p>
-        <button type="button" class="btn btn-info" id="btn-metronome-start">
-          <span class="glyphicon glyphicon-play"></span>
-        </button>
-
-        <button type="button" class="btn btn-info" id="btn-metronome-stop">
-          <span class="glyphicon glyphicon-pause"></span>
-        </button>
-      </div>
-    </div>
+    <hr>
 
     <div class="row top20">
       <div class="col-md-6">
@@ -62,7 +90,6 @@
         <input type="button" class="btn btn-info" value="reset" onclick="reset()">
       </div>
     </div>
-
 
     <div class="row top30">
       <div class="col-md-6">
