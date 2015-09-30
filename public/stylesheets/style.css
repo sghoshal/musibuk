@@ -69,3 +69,22 @@ a {
 .top20 {
   margin-top: 20px;
 }
+
+
+/* exercise.ejs */
+
+#currentBpmVal {
+  margin-left: 10px;
+}
+
+#exerciseStopwatchStartBtn {
+  margin-left: 10px;
+}
+
+#btn-metronome-start {
+  margin-left: 10px;
+}
+
+#exerciseBpmLabel {
+  margin-right: 10px;
+}

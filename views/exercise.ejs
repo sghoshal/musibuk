@@ -53,11 +53,11 @@
     <div class="row top10">
 
       <div class="col-md-3">
-        <p id="bpmText" >Current BPM: <span id="currentBpmVal"><%= bpm %></span></p>
+        <p class="lead" id="bpmText">Current BPM <span id="currentBpmVal" class="lead"><%= bpm %></span></p>
       </div>
 
       <div class="col-md-3">
-        <p>Metronome: 
+        <p class="lead">Metronome 
           <button type="button" class="btn btn-info" id="btn-metronome-start">
             <span class="glyphicon glyphicon-play"></span>
           </button>
@@ -71,25 +71,32 @@
       <div class="col-md-3">
         <form class="form-inline" id="bpmInputForm" action="/setExerciseBpm">
           <div class="form-group">
-            <label for="setBpm">Set BPM:</label>
+            <label for="setBpm"><p id="exerciseBpmLabel" class="lead">Set BPM</p></label>
             <input type="text" class="form-control" name="setBpm" size="6" maxLength="3" placeholder="Eg. 120" id="inputBpm">
           </div>
+          <input type="submit" class="btn btn-info" style="float: right"></input>
           <input type="hidden" class="form-control" name="exId" value=<%= exerciseId %>>
-          <input type="submit" class="btn btn-info" style="float right"></input>
         </form>
       </div>
+
     </div> <!-- end row -->
 
     <hr>
 
     <div class="row top20">
-      <div class="col-md-6">
-        <div>Your practice time today: <span id="time"></span></div>
-        <input type="button" class="btn btn-info" value="start" onclick="start();">
-        <input type="button" class="btn btn-info" value="stop" onclick="stop();">
-        <input type="button" class="btn btn-info" value="reset" onclick="reset()">
+
+      <div class="col-md-3">
+        <p class="lead">Practice time today</p>
+      </div>
+      
+      <div class="col-md-3">
+        <span id="time" class="lead"></span>
+        <input type="button" class="btn btn-info" id="exerciseStopwatchStartBtn" value="Start" onclick="start();">
+        <input type="button" class="btn btn-info" id="exerciseStopwatchStopBtn" value="Stop" onclick="stop();">
       </div>
     </div>
+
+    <hr>
 
     <div class="row top30">
       <div class="col-md-6">
