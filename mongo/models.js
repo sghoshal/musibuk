@@ -25,17 +25,18 @@ var historySchema = new Schema({
 });
 
 var exerciseSchema = new Schema({
-    id:             ObjectId,
-    user_id:        { type: String, required: '{PATH} is required.' },
-    name:           { type: String, required: '{PATH} is required.' },
-    entryType:      { type: String, required: '{PATH} is required.' },
-    notes:          { type: String, default: "" },
-    bpm:            { type: Number, required: '{PATH} is required.', default: 80 },
-    folderId:       { type: String, required: '{PATH} is required.' },
-    createdTime:    { type: Date, required: '{PATH} is required.', default: new Date() },
-    lastUpdated:    { type: Date, required: '{PATH} is required.', default: new Date() },
-    timePracticed:  { type: Number, default: 0 },
-    history:        [ historySchema ]
+    id:                 ObjectId,
+    user_id:            { type: String, required: '{PATH} is required.' },
+    name:               { type: String, required: '{PATH} is required.' },
+    entryType:          { type: String, required: '{PATH} is required.' },
+    notes:              { type: String, default: "" },
+    bpm:                { type: Number, required: '{PATH} is required.', default: 80 },
+    folderId:           { type: String, required: '{PATH} is required.' },
+    createdTime:        { type: Date, required: '{PATH} is required.', default: new Date() },
+    lastUpdated:        { type: Date, required: '{PATH} is required.', default: new Date() },
+    lastPracticeTime:   { type: Number, default: 0 },
+    totalPracticeTime:  { type: Number, default: 0 },
+    history:            [ historySchema ]
 });
 
 // The combination of exercise name and the folder name should be unique.
@@ -48,12 +49,13 @@ var folderSchema = new Schema({
     id:                 ObjectId,
     user_id:            { type: String, required: '{PATH} is required.' },
     name:               { type: String, required: '{PATH} is required.' },
-    entryType:      { type: String, required: '{PATH} is required.' },
+    entryType:          { type: String, required: '{PATH} is required.' },
     exercises:          { type: Array },
     stack:              { type: String, default: "root" },
     createdTime:        { type: Date, required: '{PATH} is required.', default: new Date() },
     lastUpdated:        { type: Date, required: '{PATH} is required.', default: new Date() },
-    timePracticedToday: { type: Number, default: 0 }
+    lastPracticeTime:   { type: Number, default: 0 },
+    totalPracticeTime:  { type: Number, default: 0 }
 });
 
 // The combination of stack and folder name should be unique.

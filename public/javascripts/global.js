@@ -19,20 +19,6 @@ $( "#bpmInputForm" ).submit(function(event) {
     });
 });
 
-$( "#btnExerciseSave" ).click(function(event) {
-    var timePracticed = $("#time").text();
-    var url = "/saveExerciseInfo";
-    var exerciseId = $("#bpmInputForm").find("input[name='exId']").val();
-
-    var posting = $.post(url, { 
-        timePracticed: timePracticed,
-        exerciseId: exerciseId
-    });
-
-    posting.done(function( data ) {
-        alert("Saved info");
-    });
-});
 
 
 // Javascript functions for Stopwatch for exercise.ejs

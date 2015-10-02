@@ -14,16 +14,17 @@ router.post('/', function(req, res, next) {
         req.body.exerciseName, req.body.folderName, req.body.exerciseNotes);
 
     var exercise = new mongoModel.Exercise({
-        user_id:        req.user.email,
-        name:           req.body.exerciseName,
-        entryType:      "exercise",
-        notes:          req.body.exerciseNotes,    
-        bpm:            80,
-        folderId:       req.body.folderName,
-        createdTime:    new Date(),
-        lastUpdated:    new Date(),
-        timePracticed:  0,
-        history:        []
+        user_id:            req.user.email,
+        name:               req.body.exerciseName,
+        entryType:          "exercise",
+        notes:              req.body.exerciseNotes,    
+        bpm:                80,
+        folderId:           req.body.folderName,
+        createdTime:        new Date(),
+        lastUpdated:        new Date(),
+        lastPracticeTime:   0,
+        totalPracticeTime:  0,
+        history:            [],
     });
         
     exercise.save(function(err, exercise) {

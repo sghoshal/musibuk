@@ -4,7 +4,6 @@
   <% include head %>
 </head>
 <body onload="show();">
-  <% include scripts-ext %>
 
   <div class="container">
 
@@ -98,15 +97,38 @@
 
     <hr>
 
-    <div class="row top30">
-      <div class="col-md-6">
-        <button type="button" id="btnExerciseSave" class="btn btn-primary">Save</button>
+    <div class="row top30" align ="center">
+      <div class="col-md-offset-5 col-md-2">
+        <button type="button" id="btnExerciseSave" class="btn btn-primary btn-block">Save</button>
       </div>
     </div>
 
   </div> <!-- end container -->
 
   <% include scripts-ext %>
+
+  <script type="text/javascript"> 
+    $( "#btnExerciseSave" ).click(function(event) {
+        var timePracticed = $("#time").text();
+        var url = "/saveExerciseInfo";
+        var exerciseId = $("#bpmInputForm").find("input[name='exId']").val();
+        var folderId = <%- JSON.stringify(folderId) %>;
+        var currentBpm = $("#currentBpmVal").text();
+
+        var posting = $.post(url, { 
+            timePracticed: timePracticed,
+            exerciseId: exerciseId,
+            folderId: folderId,
+            bpm: currentBpm
+        });
+
+        posting.done(function( data ) {
+            $("#time").text("00:00:00");
+            alert("Saved info");
+        });
+    });
+  </script>
+
   <script src="/javascripts/global.js"></script>
   <script src="/javascripts/metronome.js"></script>
 </body>

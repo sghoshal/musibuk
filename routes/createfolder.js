@@ -9,15 +9,16 @@ router.post('/', function(req, res, next) {
     console.log('Folder Name: %s and stack: %s', req.body.folderName, req.body.stackName);
 
     var folder = new mongoModel.Folder({ 
-        user_id:        req.user.email,
-        name:           req.body.folderName,
-        entryType:      "folder",
-        stack:          req.body.stackName, 
-        exercises:      [],
-        stack:          "root",
-        createdTime:    new Date(),
-        lastUpdated:    new Date(),
-        timePracticed:  0
+        user_id:            req.user.email,
+        name:               req.body.folderName,
+        entryType:          "folder",
+        stack:              req.body.stackName, 
+        exercises:          [],
+        stack:              "root",
+        createdTime:        new Date(),
+        lastUpdated:        new Date(),
+        lastPracticeTime:   0,
+        totalPracticeTime:  0,    
     });
 
     folder.save(function(err, folder) {
