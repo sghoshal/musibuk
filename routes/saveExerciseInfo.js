@@ -30,7 +30,7 @@ function updateExercise(req, res, next, exerciseId, folderId, timeInSeconds, bpm
     
     mongoModel.Exercise.findById(new ObjectId(exerciseId.toString()), function (err, exerciseDoc) {
         if (err) {
-            console.log("Error in finding exercise ID: %s", exerciseIdString);
+            console.log("Error in finding exercise ID: %s", exerciseId);
         }
         else {
             exerciseDoc.lastUpdated = today;
@@ -42,17 +42,41 @@ function updateExercise(req, res, next, exerciseId, folderId, timeInSeconds, bpm
                     console.log("Error in saving exercise: %s", exerciseId);
                 }
                 else {
-                    // var returnHtml = '<p id="bpmText">BPM: ' + newBpm + '</p>';
-                    // res.send(returnHtml);
-                    updateFolder(req, res, next, folderId, timeInSeconds, today);
+                    var totalTimeHours = parseInt( exerciseDoc.totalPracticeTime / 3600 );
+                    var totalTimeMinutes = parseInt( exerciseDoc.totalPracticeTime / 60 ) % 60;
+                    var totalTimeSeconds = parseInt( exerciseDoc.totalPracticeTime % 60 );
+
+                    var totalExercisePracticeTimeString = totalTimeHours + " hours, " + 
+                                                            totalTimeMinutes + " minutes, " + 
+                                                            totalTimeSeconds + " seconds";
+                    
+                    updateFolder(req, res, next, folderId, totalExercisePracticeTimeString, timeInSeconds, today);
                 }
             });
         }
     });   
 }
 
-function updateFolder(req, res, next, folderId, timeInSeconds, today) {
-    res.send("");
+function updateFolder(req, res, next, folderId, totalExercisePracticeTimeString, timeInSeconds, today) {
+    mongoModel.Folder.findById(new ObjectId(folderId.toString()), function (err, folderDoc) {
+        if (err) {
+            console.log("Error in finding folder ID: %s", folderId);
+        }
+        else {
+            folderDoc.lastUpdated = today;
+            folderDoc.lastPracticeTime = timeInSeconds;
+            folderDoc.totalPracticeTime = folderDoc.totalPracticeTime + timeInSeconds;
+
+            folderDoc.save(function(err) {
+                if(err) {
+                    console.log("Error in saving folder: %s", folderId);
+                }
+                else {
+                    res.send(totalExercisePracticeTimeString);
+                }
+            });
+        }
+    });
 }
 
 router.post('/', updateExerciseAndFolder);

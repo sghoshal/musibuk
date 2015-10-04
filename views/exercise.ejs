@@ -40,6 +40,10 @@
               <td>Notes</td>
               <td><%= notes %></td>
             </tr>
+            <tr>
+              <td>Total Time Practiced</td>
+              <td id="totalTimePracticedText"><%= totalTimePracticed %></td>
+            </tr>
           </table>
         </div><!-- end well -->
 
@@ -124,7 +128,8 @@
 
         posting.done(function( data ) {
             $("#time").text("00:00:00");
-            alert("Saved info");
+            $("#totalTimePracticedText").text(data);
+            alert("Saved exercise state.");
         });
     });
   </script>
