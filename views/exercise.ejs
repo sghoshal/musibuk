@@ -127,8 +127,9 @@
         });
 
         posting.done(function( data ) {
-            $("#time").text("00:00:00");
             $("#totalTimePracticedText").text(data);
+            stop();
+            reset();
             alert("Saved exercise state.");
         });
     });

@@ -19,8 +19,6 @@ $( "#bpmInputForm" ).submit(function(event) {
     });
 });
 
-
-
 // Javascript functions for Stopwatch for exercise.ejs
 
 //  Simple example of using private variables
@@ -58,10 +56,10 @@ var clsStopwatch = function() {
 
     // Stop or pause
     this.stop = function() {
-            // If running, update elapsed time otherwise keep it
-            lapTime = startAt ? lapTime + now() - startAt : lapTime;
-            startAt = 0; // Paused
-        };
+        // If running, update elapsed time otherwise keep it
+        lapTime = startAt ? lapTime + now() - startAt : lapTime;
+        startAt = 0; // Paused
+    };
 
     // Reset
     this.reset = function() {
