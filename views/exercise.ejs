@@ -117,13 +117,15 @@
         var url = "/saveExerciseInfo";
         var exerciseId = $("#bpmInputForm").find("input[name='exId']").val();
         var folderId = <%- JSON.stringify(folderId) %>;
-        var currentBpm = $("#currentBpmVal").text();
+        var oldBpm = <%- JSON.stringify(bpm) %>;
+        var newBpm = $("#currentBpmVal").text();
 
         var posting = $.post(url, { 
             timePracticed: timePracticed,
             exerciseId: exerciseId,
             folderId: folderId,
-            bpm: currentBpm
+            oldBpm: oldBpm,
+            newBpm: newBpm
         });
 
         posting.done(function( data ) {

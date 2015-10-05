@@ -18,10 +18,8 @@ module.exports.User = mongoose.model('user', new Schema({
 
 var historySchema = new Schema({
     date: Date,
-    timeStarted: Date,
     practiceTime: Number,
-    startBpm: Number,
-    endBpm: Number
+    bpm: Number
 });
 
 var exerciseSchema = new Schema({
