@@ -23,17 +23,6 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
     });
 }
 
-/*
- Sort in descending order.
-*/
-function compareExerciseHistory(a, b) {
-    if (a.date > b.date)
-        return -1;
-    if (a.date < b.date)
-        return 1;
-    return 0;
-}
-
 router.get('/:exerciseId', function(req, res, next) {
     console.log("In Exercise route");
     var exerciseId = mongoose.Types.ObjectId(req.params.exerciseId.toString());
@@ -52,10 +41,6 @@ router.get('/:exerciseId', function(req, res, next) {
             var totalTimeSeconds = parseInt( exercise.totalPracticeTime % 60 );
 
             var totalPracticeTimeString = totalTimeHours + " hours, " + totalTimeMinutes + " minutes, " + totalTimeSeconds + " seconds";
-
-            // Sort the exercise history if there is any.
-
-            exercise.history.sort(compareExerciseHistory);
 
             if(exercise.folderId !== 'root') {
 
