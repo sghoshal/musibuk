@@ -7,7 +7,7 @@
 
   <div class="container">
 
-    <% if (typeof folderName !== 'undefined') {%>
+    <% if (folderName !== null) {%>
     <div class="row" id="homeBreadCrumb" >
       <ol class="breadcrumb">
         <li><a href="/home">Home</a></li>
@@ -132,7 +132,16 @@
         var timePracticed = $("#time").text();
         var url = "/saveExerciseInfo";
         var exerciseId = $("#bpmInputForm").find("input[name='exId']").val();
-        var folderId = <%- JSON.stringify(folderId) %>;
+        
+        var folderId;
+
+        if (typeof folderId === 'undefined') {
+          folderId = "root"
+        }
+        else {
+          folderId = <%- JSON.stringify(folderId) %>;
+        }
+
         var oldBpm = <%- JSON.stringify(bpm) %>;
         var newBpm = $("#currentBpmVal").text();
 

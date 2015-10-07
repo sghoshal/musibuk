@@ -7,7 +7,8 @@ var router = express.Router();
 var result = [];
 
 function renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderId) {
-    console.log('Rendering page now. Ex Name: %s, Folder Name: %s', exercise.name, folderName);
+    console.log('Rendering page now. Ex Name: %s, Folder Name: %s, Folder ID: %s', 
+                    exercise.name, folderName, folderId);
     
     res.render('exercise', {
         "exerciseId": exercise._id.toString(),
@@ -60,8 +61,8 @@ router.get('/:exerciseId', function(req, res, next) {
                 });  
             }
             else {
-                console.log("Folder ID = root");
-                renderPage(req, res, next, exercise, totalPracticeTimeString);
+                console.log("Folder ID = root. Folder ID: %s", exercise.folderId);
+                renderPage(req, res, next, exercise, totalPracticeTimeString, null, exercise.folderId);
             }
         }
     });

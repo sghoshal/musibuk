@@ -98,7 +98,16 @@ function updateExercise(req, res, next, exerciseId, folderId, timePracticedInSec
                                                             totalTimeMinutes + " minutes, " + 
                                                             totalTimeSeconds + " seconds";
                     
-                    updateFolder(req, res, next, folderId, totalExercisePracticeTimeString, timePracticedInSeconds, today);
+                    if (folderId === "root") {
+                        console.log("Folder ID is undefined")
+                        res.send(totalExercisePracticeTimeString);
+                    }
+                    else {
+                        console.log("Folder ID is not undefined. Updating folder")
+
+                        updateFolder(req, res, next, folderId, totalExercisePracticeTimeString, timePracticedInSeconds, today);
+
+                    }
                 }
             });
         }
