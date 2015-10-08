@@ -18,7 +18,8 @@ router.post('/', function(req, res, next) {
         createdTime:        new Date(),
         lastUpdated:        new Date(),
         lastPracticeTime:   0,
-        totalPracticeTime:  0,    
+        totalPracticeTime:  0,
+        history:            []
     });
 
     folder.save(function(err, folder) {

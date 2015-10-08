@@ -7,7 +7,7 @@ var router = express.Router();
 var result = [];
 
 function renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderId) {
-    console.log('Rendering page now. Ex Name: %s, Folder Name: %s, Folder ID: %s', 
+    console.log('- exercise.js: Rendering page now. Ex Name: %s, Folder Name: %s, Folder ID: %s', 
                     exercise.name, folderName, folderId);
     
     res.render('exercise', {

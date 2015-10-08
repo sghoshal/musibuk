@@ -28,9 +28,11 @@ var exerciseSchema = new Schema({
     name:               { type: String, required: '{PATH} is required.' },
     entryType:          { type: String, required: '{PATH} is required.' },
     notes:              { type: String, default: "" },
-    bpm:                { type: Number, required: '{PATH} is required.', default: 80 },
     folderId:           { type: String, required: '{PATH} is required.' },
     createdTime:        { type: Date, required: '{PATH} is required.', default: new Date() },
+    bpm:                { type: Number, required: '{PATH} is required.', default: 100 },
+    bpmGoal:            { type: Number, default: 140 },
+    maxPracticeTime:    { type: Number, default: 600 },
     lastUpdated:        { type: Date, required: '{PATH} is required.', default: new Date() },
     lastPracticeTime:   { type: Number, default: 0 },
     totalPracticeTime:  { type: Number, default: 0 },
@@ -43,6 +45,12 @@ exerciseSchema.index({ user_id: 1, name: 1, folder: 1 }, { unique: true } );
 module.exports.Exercise = mongoose.model('exercise', exerciseSchema );
 
 // ----- collection - 'folders' ----- //
+
+var folderHistorySchema = new Schema({
+    date: Date,
+    practiceTime: Number
+});
+
 var folderSchema = new Schema({
     id:                 ObjectId,
     user_id:            { type: String, required: '{PATH} is required.' },
@@ -53,7 +61,8 @@ var folderSchema = new Schema({
     createdTime:        { type: Date, required: '{PATH} is required.', default: new Date() },
     lastUpdated:        { type: Date, required: '{PATH} is required.', default: new Date() },
     lastPracticeTime:   { type: Number, default: 0 },
-    totalPracticeTime:  { type: Number, default: 0 }
+    totalPracticeTime:  { type: Number, default: 0 },
+    history:            [ folderHistorySchema ]
 });
 
 // The combination of stack and folder name should be unique.

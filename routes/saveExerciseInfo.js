@@ -120,9 +120,59 @@ function updateFolder(req, res, next, folderId, totalExercisePracticeTimeString,
             console.log("Error in finding folder ID: %s", folderId);
         }
         else {
+            var lastUpdatedDate = folderDoc.lastUpdated.toISOString().split("T")[0];
+            var todayDate = today.toISOString().split("T")[0];
+
+            // If the last practice date is same as today, then we add the exercise practice time.
+            // Else we have a new practice session today.
+            if (lastUpdatedDate === todayDate) {
+                folderDoc.lastPracticeTime += timePracticedInSeconds;
+            }
+            else {
+                folderDoc.lastPracticeTime = timePracticedInSeconds;
+            }
+            
             folderDoc.lastUpdated = today;
-            folderDoc.lastPracticeTime = timePracticedInSeconds;
-            folderDoc.totalPracticeTime = folderDoc.totalPracticeTime + timePracticedInSeconds;
+            folderDoc.totalPracticeTime += timePracticedInSeconds;
+
+            if (folderDoc.history.length > 0) {
+                var lastFolderPracticeSession = folderDoc.history[folderDoc.history.length - 1];
+
+                var lastFolderPracticeSessionDateString = lastFolderPracticeSession.date.toISOString().split("T")[0];
+                var currentFolderPracticeSessionDateString = today.toISOString().split("T")[0];
+
+                console.log("Last Folder Practice Session Date: %s", lastFolderPracticeSessionDateString);
+                console.log("Current Folder Practice Session Date: %s", currentFolderPracticeSessionDateString);
+
+                // If the last practice date is same as new practice date, then we edit the last history.
+                // Else we create a new history entry.
+
+                if (lastFolderPracticeSessionDateString === currentFolderPracticeSessionDateString) {
+                    console.log("Editing the last Folder practice session as the new session is on the same day ");
+
+                    lastFolderPracticeSession.practiceTime += timePracticedInSeconds;
+                }
+                else {
+                    console.log("Adding the first folder practice session.");
+
+                    var folderPracticeSession = {
+                        date: today,
+                        practiceTime: timePracticedInSeconds,
+                    };
+
+                    folderDoc.history.push(folderPracticeSession);
+                }
+            }
+            else {
+                console.log("Adding the first folder practice session.");
+
+                var folderPracticeSession = {
+                    date: today,
+                    practiceTime: timePracticedInSeconds,
+                };
+
+                folderDoc.history.push(folderPracticeSession);
+            }
 
             folderDoc.save(function(err) {
                 if(err) {

@@ -132,14 +132,15 @@
         var timePracticed = $("#time").text();
         var url = "/saveExerciseInfo";
         var exerciseId = $("#bpmInputForm").find("input[name='exId']").val();
-        
-        var folderId;
+     
+        var folderIdString = <%- JSON.stringify(folderId) %>;
 
-        if (typeof folderId === 'undefined') {
-          folderId = "root"
+
+        if (typeof folderIdString === 'undefined') {
+          folderIdString = "root"
         }
         else {
-          folderId = <%- JSON.stringify(folderId) %>;
+          folderIdString = <%- JSON.stringify(folderId) %>;
         }
 
         var oldBpm = <%- JSON.stringify(bpm) %>;
@@ -148,7 +149,7 @@
         var posting = $.post(url, { 
             timePracticed: timePracticed,
             exerciseId: exerciseId,
-            folderId: folderId,
+            folderId: folderIdString,
             oldBpm: oldBpm,
             newBpm: newBpm
         });
