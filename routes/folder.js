@@ -33,6 +33,9 @@ function renderPage(req, res, next, folder) {
                                        folderName: folder.name,
                                        folderId: folder._id,
                                        exercises: [],
+                                       lastPracticed: "Never",
+                                       lastPracticeTime: 0,
+                                       totalPracticeTime: 0,
                                        errorMsg: req.flash('errorMsg') });
     }
     else {
@@ -46,6 +49,9 @@ function renderPage(req, res, next, folder) {
                                        folderName: folder.name,
                                        folderId: folder._id,
                                        exercises: exercises,
+                                       lastPracticed: folder.lastUpdated,
+                                       lastPracticeTime: folder.lastPracticeTime,
+                                       totalPracticeTime: folder.totalPracticeTime,
                                        errorMsg: req.flash('errorMsg') });
             }
         });

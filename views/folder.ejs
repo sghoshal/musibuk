@@ -21,6 +21,30 @@
       </div>
 
       <div class="row">
+        <div class="col-md-12">
+
+          <div class="well">
+            <p class="lead"><%= folderName %></p>
+
+            <table class="table">
+              <tr>
+                <td>Last Practiced</td>
+                <td>On <%= lastPracticed %> for <%= lastPracticeTime %> seconds</td>
+              </tr>
+              <tr>
+                <td>All time</td>
+                <td><%= totalPracticeTime %> seconds</td>
+              </tr>
+            </table>
+          </div><!-- end well -->
+
+          
+        </div>
+      </div> <!-- end row -->
+
+      <hr>
+
+      <div class="row">
           <div class="col-md-2">
             <a href="#newExerciseInFolderModal" role="button" class="btn btn-info btn-block" data-toggle="modal"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;New Exercise</a>
 
