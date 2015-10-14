@@ -117,6 +117,17 @@
 
     <hr>
 
+    <div class="row top20">
+      <div class="col-md-6" id="exercise-analytics-bpm">
+        <p class="lead" align="center">BPM progress</p>
+
+      </div>
+
+      
+    </div>
+
+    <hr>
+
     <div class="row top30" align ="center">
       <div class="col-md-offset-5 col-md-2">
         <button type="button" id="btnExerciseSave" class="btn btn-primary btn-block">Save</button>
@@ -126,6 +137,7 @@
   </div> <!-- end container -->
 
   <% include scripts-ext %>
+  <script src="/javascripts/d3/d3.min.js"></script>
 
   <script type="text/javascript"> 
     $( "#btnExerciseSave" ).click(function(event) {
@@ -161,6 +173,69 @@
             alert("Saved exercise state.");
         });
     });
+  </script>
+
+  <!-- D3 visualization - Exercise Analytics -->
+
+  <script type="text/javascript">
+    
+    //Width and height
+
+    var w = 400;
+    var h = 250;
+    var barPadding = 1;
+    
+    var pastBpmsString = <%- JSON.stringify(pastBpms) %>;
+    var dataset = [];
+    for(var i = 0; i < pastBpmsString.length; i++) {
+      dataset[i] = parseInt(pastBpmsString[i]);
+    }
+    
+    console.log("DATASET: %s", dataset.toString());
+    
+    //Create SVG element
+    var svg = d3.select("#exercise-analytics-bpm")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h);
+
+    svg.selectAll("rect")
+       .data(dataset)
+       .enter()
+       .append("rect")
+       .attr("x", function(d, i) {
+          console.log("OK D: %s", d);
+          return i * (w / dataset.length);
+       })
+       .attr("y", function(d) {
+          return h - (d);
+       })
+       .attr("width", w / dataset.length - barPadding)
+       .attr("height", function(d) {
+          return d;
+       })
+       .attr("fill", function(d) {
+        return "rgb(0, 0, " + (d * 1) + ")";
+       });
+
+    svg.selectAll("text")
+       .data(dataset)
+       .enter()
+       .append("text")
+       .text(function(d) {
+          return d;
+       })
+       .attr("text-anchor", "middle")
+       .attr("x", function(d, i) {
+          return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
+       })
+       .attr("y", function(d) {
+          return h - (d) + 14;
+       })
+       .attr("font-family", "sans-serif")
+       .attr("font-size", "11px")
+       .attr("fill", "white");
+
   </script>
 
   <script src="/javascripts/global.js"></script>

@@ -10,6 +10,10 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
     console.log('- exercise.js: Rendering page now. Ex Name: %s, Folder Name: %s, Folder ID: %s', 
                     exercise.name, folderName, folderId);
     
+    var pastBpms = exercise.history.map(function(arr) {
+        return arr.bpm;
+    });
+
     res.render('exercise', {
         "exerciseId": exercise._id.toString(),
         "exerciseName": exercise.name,
@@ -20,7 +24,8 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
         "history": exercise.history,
         "notes": exercise.notes,
         "folderName": folderName,
-        "folderId": folderId
+        "folderId": folderId,
+        "pastBpms": pastBpms
     });
 }
 
