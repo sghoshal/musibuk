@@ -120,10 +120,13 @@
     <div class="row top20">
       <div class="col-md-6" id="exercise-analytics-bpm">
         <p class="lead" align="center">BPM progress</p>
-
       </div>
 
-      
+      <div class="col-md-6" id="exercise-analytics-time">
+        <p class="lead" align="center">Time practiced</p>
+      </div>
+
+
     </div>
 
     <hr>
@@ -185,32 +188,49 @@
     var h = 250;
     var barPadding = 1;
     
+    var datasetBpm = [];
+    var datasetTime = [];
     var pastBpmsString = <%- JSON.stringify(pastBpms) %>;
-    var dataset = [];
+    var pastPracticeTimesString = <%- JSON.stringify(pastPracticeTimes) %>;
+
     for(var i = 0; i < pastBpmsString.length; i++) {
-      dataset[i] = parseInt(pastBpmsString[i]);
+      datasetBpm[i] = parseInt(pastBpmsString[i]);
+    }
+
+    for(var i = 0; i < pastPracticeTimesString.length; i++) {
+      datasetTime[i] = parseInt(pastPracticeTimesString[i]);
     }
     
-    console.log("DATASET: %s", dataset.toString());
+    console.log("DATASET BPM: %s", datasetBpm.toString());
+    console.log("DATASET TIME: %s", datasetTime.toString());
+
     
     //Create SVG element
-    var svg = d3.select("#exercise-analytics-bpm")
+
+    var svgBpm = d3.select("#exercise-analytics-bpm")
           .append("svg")
           .attr("width", w)
           .attr("height", h);
 
-    svg.selectAll("rect")
-       .data(dataset)
+    var svgTime = d3.select("#exercise-analytics-time")
+          .append("svg")
+          .attr("width", w)
+          .attr("height", h); 
+
+    // SVG for past BPMs
+
+    svgBpm.selectAll("rect")
+       .data(datasetBpm)
        .enter()
        .append("rect")
        .attr("x", function(d, i) {
           console.log("OK D: %s", d);
-          return i * (w / dataset.length);
+          return i * (w / datasetBpm.length);
        })
        .attr("y", function(d) {
           return h - (d);
        })
-       .attr("width", w / dataset.length - barPadding)
+       .attr("width", w / datasetBpm.length - barPadding)
        .attr("height", function(d) {
           return d;
        })
@@ -218,8 +238,8 @@
         return "rgb(0, 0, " + (d * 1) + ")";
        });
 
-    svg.selectAll("text")
-       .data(dataset)
+    svgBpm.selectAll("text")
+       .data(datasetBpm)
        .enter()
        .append("text")
        .text(function(d) {
@@ -227,7 +247,47 @@
        })
        .attr("text-anchor", "middle")
        .attr("x", function(d, i) {
-          return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
+          return i * (w / datasetBpm.length) + (w / datasetBpm.length - barPadding) / 2;
+       })
+       .attr("y", function(d) {
+          return h - (d) + 14;
+       })
+       .attr("font-family", "sans-serif")
+       .attr("font-size", "11px")
+       .attr("fill", "white");
+
+
+    // SVG for time practiced
+
+    svgTime.selectAll("rect")
+       .data(datasetTime)
+       .enter()
+       .append("rect")
+       .attr("x", function(d, i) {
+          console.log("OK D: %s", d);
+          return i * (w / datasetTime.length);
+       })
+       .attr("y", function(d) {
+          return h - (d);
+       })
+       .attr("width", w / datasetTime.length - barPadding)
+       .attr("height", function(d) {
+          return d;
+       })
+       .attr("fill", function(d) {
+        return "rgb(0, 0, " + (d * 1) + ")";
+       });
+
+    svgTime.selectAll("text")
+       .data(datasetTime)
+       .enter()
+       .append("text")
+       .text(function(d) {
+          return d;
+       })
+       .attr("text-anchor", "middle")
+       .attr("x", function(d, i) {
+          return i * (w / datasetTime.length) + (w / datasetTime.length - barPadding) / 2;
        })
        .attr("y", function(d) {
           return h - (d) + 14;

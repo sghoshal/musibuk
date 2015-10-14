@@ -14,6 +14,10 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
         return arr.bpm;
     });
 
+    var pastPracticeTimes = exercise.history.map(function(arr) {
+        return arr.practiceTime;
+    });
+
     res.render('exercise', {
         "exerciseId": exercise._id.toString(),
         "exerciseName": exercise.name,
@@ -25,7 +29,8 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
         "notes": exercise.notes,
         "folderName": folderName,
         "folderId": folderId,
-        "pastBpms": pastBpms
+        "pastBpms": pastBpms,
+        "pastPracticeTimes": pastPracticeTimes
     });
 }
 
