@@ -6,17 +6,57 @@ var router = express.Router();
 
 var result = [];
 
-function renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderId) {
+function isSameDate(date1, date2) {
+
+    return ((date1.getFullYear() === date2.getFullYear()) &&
+            (date1.getMonth() === date2.getMonth()) &&
+            (date1.getDate() === date2.getDate()));
+}
+
+function getLastWeekHistory(history) {
+    var result = [];
+    var today = new Date();
+    var dateWeek = new Date();
+    var historyIndex = history.length - 1;
+
+    // for (var i = 0; i < history.length; i++) {
+    //     console.log("History %s: date: %s", i, 
+    //         history[i].date.getFullYear().toString() + history[i].date.getMonth().toString() + history[i].date.getDate().toString())
+    // }
+
+    for (var i = 0; i < 14; i++) {
+        dateWeek.setDate(today.getDate() - i);
+
+        // console.log("Date Week -%s: date: %s", i, 
+        //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
+
+        if ((historyIndex >= 0) && isSameDate(dateWeek, history[historyIndex].date)) {
+            console.log("Practice session found on date - %s", dateWeek.getDate().toString());
+
+            result.push({
+                bpm: history[historyIndex].bpm, 
+                time: history[historyIndex].practiceTime
+            });
+
+            historyIndex--;
+        }
+        else {
+            console.log("No practice session on this Date: %s", dateWeek.getDate().toString());
+
+            result.push({
+                bpm: 0, 
+                time: 0
+            });
+        }
+    }
+
+    return result;
+}
+
+
+function renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderId, lastWeekHistory) {
     console.log('- exercise.js: Rendering page now. Ex Name: %s, Folder Name: %s, Folder ID: %s', 
                     exercise.name, folderName, folderId);
-    
-    var pastBpms = exercise.history.map(function(arr) {
-        return arr.bpm;
-    });
-
-    var pastPracticeTimes = exercise.history.map(function(arr) {
-        return arr.practiceTime;
-    });
 
     res.render('exercise', {
         "exerciseId": exercise._id.toString(),
@@ -29,8 +69,7 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
         "notes": exercise.notes,
         "folderName": folderName,
         "folderId": folderId,
-        "pastBpms": pastBpms,
-        "pastPracticeTimes": pastPracticeTimes
+        "lastWeekHistory": lastWeekHistory
     });
 }
 
@@ -66,13 +105,17 @@ router.get('/:exerciseId', function(req, res, next) {
                     else {
                         var folderName = folderDocument[0].name;
                         console.log('The folder name: %s', folderName);
-                        renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderDocument[0]._id.toString());
+
+                        var lastWeekHistory = getLastWeekHistory(exercise.history);                        
+                        renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderDocument[0]._id.toString(), lastWeekHistory);
                     }
                 });  
             }
             else {
                 console.log("Folder ID = root. Folder ID: %s", exercise.folderId);
-                renderPage(req, res, next, exercise, totalPracticeTimeString, null, exercise.folderId);
+                
+                var lastWeekHistory = getLastWeekHistory(exercise.history);
+                renderPage(req, res, next, exercise, totalPracticeTimeString, null, exercise.folderId, lastWeekHistory);
             }
         }
     });

@@ -190,15 +190,14 @@
     
     var datasetBpm = [];
     var datasetTime = [];
-    var pastBpmsString = <%- JSON.stringify(pastBpms) %>;
-    var pastPracticeTimesString = <%- JSON.stringify(pastPracticeTimes) %>;
+    var pastWeekHistory = <%- JSON.stringify(lastWeekHistory) %>;
 
-    for(var i = 0; i < pastBpmsString.length; i++) {
-      datasetBpm[i] = parseInt(pastBpmsString[i]);
+    for(var i = 0; i < pastWeekHistory.length; i++) {
+      datasetBpm[i] = parseInt(pastWeekHistory[i].bpm);
     }
 
-    for(var i = 0; i < pastPracticeTimesString.length; i++) {
-      datasetTime[i] = parseInt(pastPracticeTimesString[i]);
+    for(var i = 0; i < pastWeekHistory.length; i++) {
+      datasetTime[i] = parseInt(pastWeekHistory[i].time);
     }
     
     console.log("DATASET BPM: %s", datasetBpm.toString());
@@ -268,11 +267,11 @@
           return i * (w / datasetTime.length);
        })
        .attr("y", function(d) {
-          return h - (d);
+          return h - (d / 2);
        })
        .attr("width", w / datasetTime.length - barPadding)
        .attr("height", function(d) {
-          return d;
+          return (d / 2);
        })
        .attr("fill", function(d) {
         return "rgb(0, 0, " + (d * 1) + ")";
@@ -290,7 +289,7 @@
           return i * (w / datasetTime.length) + (w / datasetTime.length - barPadding) / 2;
        })
        .attr("y", function(d) {
-          return h - (d) + 14;
+          return h - (d / 2) + 14;
        })
        .attr("font-family", "sans-serif")
        .attr("font-size", "11px")
