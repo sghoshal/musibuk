@@ -24,7 +24,7 @@ function getLastWeekHistory(history) {
     //         history[i].date.getFullYear().toString() + history[i].date.getMonth().toString() + history[i].date.getDate().toString())
     // }
 
-    for (var i = 0; i < 14; i++) {
+    for (var i = 0; i < 7; i++) {
         dateWeek.setDate(today.getDate() - i);
 
         // console.log("Date Week -%s: date: %s", i, 
@@ -50,6 +50,9 @@ function getLastWeekHistory(history) {
         }
     }
 
+    for(var i = 0; i < result.length; i++) {
+        console.log("RESULT: %s %s", result[i].bpm, result[i].time);
+    }
     return result;
 }
 
@@ -95,6 +98,7 @@ router.get('/:exerciseId', function(req, res, next) {
             if(exercise.folderId !== 'root') {
 
                 console.log("Folder is not root. Is it? Folder ID: %s", exercise.folderId);
+
                 var folderId = mongoose.Types.ObjectId(exercise.folderId.toString());
             
                 mongoModel.Folder.find({ _id: folderId, "user_id": req.user.email }, function(err, folderDocument) {
@@ -106,7 +110,7 @@ router.get('/:exerciseId', function(req, res, next) {
                         var folderName = folderDocument[0].name;
                         console.log('The folder name: %s', folderName);
 
-                        var lastWeekHistory = getLastWeekHistory(exercise.history);                        
+                        var lastWeekHistory = getLastWeekHistory(exercise.history);
                         renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderDocument[0]._id.toString(), lastWeekHistory);
                     }
                 });  

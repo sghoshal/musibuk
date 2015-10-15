@@ -192,17 +192,13 @@
     var datasetTime = [];
     var pastWeekHistory = <%- JSON.stringify(lastWeekHistory) %>;
 
-    for(var i = 0; i < pastWeekHistory.length; i++) {
-      datasetBpm[i] = parseInt(pastWeekHistory[i].bpm);
+    for (var i = (pastWeekHistory.length - 1); i >= 0; i--) {
+      datasetBpm[(pastWeekHistory.length - 1) - i] = parseInt(pastWeekHistory[i].bpm);
+      datasetTime[(pastWeekHistory.length - 1) - i] = parseInt(pastWeekHistory[i].time);
     }
 
-    for(var i = 0; i < pastWeekHistory.length; i++) {
-      datasetTime[i] = parseInt(pastWeekHistory[i].time);
-    }
-    
     console.log("DATASET BPM: %s", datasetBpm.toString());
     console.log("DATASET TIME: %s", datasetTime.toString());
-
     
     //Create SVG element
 
