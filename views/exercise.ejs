@@ -62,11 +62,11 @@
 
       <div class="col-md-3">
         <p class="lead">Metronome 
-          <button type="button" class="btn btn-info" id="btn-metronome-start">
+          <button type="button" class="btn btn-default" id="btn-metronome-start">
             <span class="glyphicon glyphicon-play"></span>
           </button>
 
-          <button type="button" class="btn btn-info" id="btn-metronome-stop">
+          <button type="button" class="btn btn-default" id="btn-metronome-stop">
             <span class="glyphicon glyphicon-pause"></span>
           </button>
         </p>
@@ -78,7 +78,7 @@
             <label for="setBpm"><p id="exerciseBpmLabel" class="lead">Set BPM</p></label>
             <input type="text" class="form-control" name="setBpm" size="6" maxLength="3" placeholder="Eg. 120" id="inputBpm">
           </div>
-          <input type="submit" class="btn btn-info" style="float: right"></input>
+          <input type="submit" class="btn btn-primary" style="float: right"></input>
           <input type="hidden" class="form-control" name="exId" value=<%= exerciseId %>>
         </form>
       </div>
@@ -95,8 +95,8 @@
       
       <div class="col-md-3">
         <span id="time" class="lead"></span>
-        <input type="button" class="btn btn-info" id="exerciseStopwatchStartBtn" value="Start" onclick="start();">
-        <input type="button" class="btn btn-info" id="exerciseStopwatchStopBtn" value="Stop" onclick="stop();">
+        <input type="button" class="btn btn-default" id="exerciseStopwatchStartBtn" value="Start" onclick="start();">
+        <input type="button" class="btn btn-default" id="exerciseStopwatchStopBtn" value="Stop" onclick="stop();">
       </div>
     </div>
 
@@ -111,12 +111,12 @@
       
       <div class="row">
         <!-- Webcam start button -->
-        <button type="button" class="btn btn-primary" id="btn-webcam-start">
+        <button type="button" class="btn btn-default" id="btn-webcam-start">
           <span class="glyphicon glyphicon-play"></span>
         </button>
 
         <!-- Webcam stop button -->
-        <button type="button" class="btn btn-danger" id="btn-webcam-stop">
+        <button type="button" class="btn btn-default" id="btn-webcam-stop">
           <span class="glyphicon glyphicon-pause"></span>
         </button>
       </div> <!-- end div=row -->
@@ -155,7 +155,7 @@
 
     <div class="row top30" align ="center">
       <div class="col-md-offset-5 col-md-2">
-        <button type="button" id="btnExerciseSave" class="btn btn-primary btn-block">Save</button>
+        <button type="button" id="btnExerciseSave" class="btn btn-lg btn-primary btn-block">Save</button>
       </div>
     </div>
 
