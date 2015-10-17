@@ -10,6 +10,48 @@ function fetchFolderExercises(req, res, next) {
     getFolderFromIdAndRenderPage(req, res, next, folderId);
 }
 
+function isSameDate(date1, date2) {
+
+    return ((date1.getFullYear() === date2.getFullYear()) &&
+            (date1.getMonth() === date2.getMonth()) &&
+            (date1.getDate() === date2.getDate()));
+}
+
+function getLastWeekHistory(history) {
+    var result = [];
+    var today = new Date();
+    var dateWeek = new Date();
+    var historyIndex = history.length - 1;
+
+    for (var i = 0; i < 7; i++) {
+        dateWeek.setDate(today.getDate() - i);
+
+        // console.log("Date Week -%s: date: %s", i, 
+        //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
+
+        if ((historyIndex >= 0) && isSameDate(dateWeek, history[historyIndex].date)) {
+            console.log("Practice session found on date - %s", dateWeek.getDate().toString());
+
+            result.push({
+                date: history[historyIndex].date, 
+                practiceTime: history[historyIndex].practiceTime
+            });
+
+            historyIndex--;
+        }
+        else {
+            console.log("No practice session on this Date: %s", dateWeek.getDate().toString());
+
+            result.push({
+                date: new Date().setDate(today.getDate() - i), 
+                practiceTime: 0
+            });
+        }
+    }
+
+    return result;
+}
+
 function getFolderFromIdAndRenderPage(req, res, next, folderId) {
     mongoModel.Folder.find({_id: folderId }, function(err, folderDocument) {
         if(err) {
@@ -18,12 +60,16 @@ function getFolderFromIdAndRenderPage(req, res, next, folderId) {
         }
         else {
             console.log('Loading folders page with folder: %s', folderDocument[0]);
-            renderPage(req, res, next, folderDocument[0]);
+            var lastWeekHistory = getLastWeekHistory(folderDocument[0].history);
+
+            console.log("Last week history: %s", JSON.stringify(lastWeekHistory));
+
+            renderPage(req, res, next, folderDocument[0], lastWeekHistory);
         }
     });
 }
 
-function renderPage(req, res, next, folder) {
+function renderPage(req, res, next, folder, lastWeekHistory) {
     var folderExerciseIdList = folder.exercises;
 
     console.log("Exercises to be fetched: %s", folderExerciseIdList );
@@ -52,7 +98,8 @@ function renderPage(req, res, next, folder) {
                                        lastPracticed: folder.lastUpdated,
                                        lastPracticeTime: folder.lastPracticeTime,
                                        totalPracticeTime: folder.totalPracticeTime,
-                                       errorMsg: req.flash('errorMsg') });
+                                       errorMsg: req.flash('errorMsg'),
+                                       lastWeekHistory: lastWeekHistory });
             }
         });
     }
@@ -104,7 +151,11 @@ function createExerciseInFolder(req, res, next) {
                                     }
                                     else {
                                         console.log( "Successfully updated. Here is the updated folder: %s", folder );
-                                        renderPage(req, res, next, folder);
+                                        var lastWeekHistory = getLastWeekHistory(folder.history);
+
+                                        console.log("Last week history: %s", JSON.stringify(lastWeekHistory));
+
+                                        renderPage(req, res, next, folder, lastWeekHistory);
                                     }
                                 });
         }
