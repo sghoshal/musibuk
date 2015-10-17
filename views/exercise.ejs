@@ -3,6 +3,7 @@
 <head>
   <% include head %>
 </head>
+
 <body onload="show();">
 
   <div class="container">
@@ -101,6 +102,28 @@
 
     <hr>
 
+    <!-- Webcam container -->
+    <div id="webcam-container" align="center">
+      <p class="lead">Webcam</p>
+
+      <div class="row" id="webcam">
+      </div> <!-- end div=row -->
+      
+      <div class="row">
+        <!-- Webcam start button -->
+        <button type="button" class="btn btn-primary" id="btn-webcam-start">
+          <span class="glyphicon glyphicon-play"></span>
+        </button>
+
+        <!-- Webcam stop button -->
+        <button type="button" class="btn btn-danger" id="btn-webcam-stop">
+          <span class="glyphicon glyphicon-pause"></span>
+        </button>
+      </div> <!-- end div=row -->
+    </div> <!-- end div=webcam-container  -->
+
+    <hr>
+
     <div class="row top20">
       <div class="col-md-3">
         <p class="lead">Your past sessions</p>
@@ -140,6 +163,9 @@
 
   <% include scripts-ext %>
   <script src="/javascripts/d3/d3.min.js"></script>
+  <script language="JavaScript" src="//ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+  <script language="JavaScript" src="/javascripts/scriptcam/scriptcam.js"></script>
+  <script type="text/javascript" src="/javascripts/webcam.js"></script>
 
   <script type="text/javascript"> 
     $( "#btnExerciseSave" ).click(function(event) {
