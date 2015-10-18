@@ -9,7 +9,7 @@
   <div class="container">
 
     <!-- Display Navigation Breadcrumb -->
-    
+
     <% if (folderName !== null) {%>
     <div class="row" id="homeBreadCrumb" >
       <ol class="breadcrumb">
@@ -105,30 +105,30 @@
         <input type="button" class="btn btn-default" id="exerciseStopwatchStartBtn" value="Start" onclick="start();">
         <input type="button" class="btn btn-default" id="exerciseStopwatchStopBtn" value="Stop" onclick="stop();">
       </div>
-    </div>
 
-    <hr>
-
-    <!-- Webcam container -->
-
-    <div id="webcam-container" align="center">
-      <p class="lead">Webcam</p>
-
-      <div class="row" id="webcam">
-      </div> <!-- end div=row -->
+      <!-- Webcam container -->
       
-      <div class="row">
-        <!-- Webcam start button -->
-        <button type="button" class="btn btn-default" id="btn-webcam-start">
-          <span class="glyphicon glyphicon-play"></span>
-        </button>
+      <div class="col-md-6">
+        <div id="webcam-container" align="center">
+          <p class="lead">Webcam</p>
 
-        <!-- Webcam stop button -->
-        <button type="button" class="btn btn-default" id="btn-webcam-stop">
-          <span class="glyphicon glyphicon-pause"></span>
-        </button>
-      </div> <!-- end div=row -->
-    </div> <!-- end div=webcam-container  -->
+          <div class="row" id="webcam">
+          </div> <!-- end div=row -->
+          
+          <div class="row">
+            <!-- Webcam start button -->
+            <button type="button" class="btn btn-default" id="btn-webcam-start">
+              <span class="glyphicon glyphicon-play"></span>
+            </button>
+
+            <!-- Webcam stop button -->
+            <button type="button" class="btn btn-default" id="btn-webcam-stop">
+              <span class="glyphicon glyphicon-stop"></span>
+            </button>
+          </div> <!-- end div=row -->
+        </div> <!-- end div=webcam-container  -->
+      </div>
+    </div>
 
     <hr>
 

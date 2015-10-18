@@ -131,11 +131,12 @@
 
     <script type="text/javascript">
       
-      //Width and height
+      //Width, height and paddings
 
       var w = 400;
       var h = 250;
       var textPadding = Math.round(h / 10);
+      var xAxisTextPadding = Math.round(h / 10);
       var barPadding = 1;
       var datasetTime = [];
 
@@ -143,26 +144,31 @@
 
       if (pastWeekHistory.length > 0) {
         for (var i = (pastWeekHistory.length - 1); i >= 0; i--) {
-          datasetTime[(pastWeekHistory.length - 1) - i] = parseInt(pastWeekHistory[i].practiceTime);
+
+
+          datasetTime[(pastWeekHistory.length - 1) - i] = { 
+            practiceTime: parseInt(pastWeekHistory[i].practiceTime),
+            shortDateString: pastWeekHistory[i].shortDateString
+          }
         }
 
-        console.log("DATASET TIME: %s", datasetTime.toString());
+        console.log("DATASET TIME: %s", JSON.stringify(datasetTime));
 
         var yScaleTime = d3.scale.linear()
                               .domain([0, d3.max(datasetTime, function(d) {
-                                return d;
+                                return d.practiceTime;
                               })])
-                              .range([0, h - textPadding]);
+                              .range([0, h - (textPadding + xAxisTextPadding) ]);
 
         var colorScaleTime = d3.scale.linear()
                             .domain([0, d3.max(datasetTime, function(d) {
-                              return d;
+                              return d.practiceTime;
                             })])
                             .range([50, 200]);
 
         var colorScaleDarkerTime = d3.scale.linear()
                                 .domain([0, d3.max(datasetTime, function(d) {
-                                  return d;
+                                  return d.practiceTime;
                                 })])
                                 .range([1, 0.1]);
         
@@ -180,35 +186,52 @@
            .enter()
            .append("rect")
            .attr("x", function(d, i) {
-              console.log("OK D: %s", d);
+              console.log("OK D: %s", d.practiceTime);
               return i * (w / datasetTime.length);
            })
            .attr("y", function(d) {
-              return h - yScaleTime(d);
+              return h - (xAxisTextPadding + yScaleTime(d.practiceTime));
            })
            .attr("width", w / datasetTime.length - barPadding)
            .attr("height", function(d) {
-              return yScaleTime(d);
+              return yScaleTime(d.practiceTime);
            })
           .style("fill", function(d){ 
-            console.log("For daker. Got d: %s %s", d, colorScaleDarkerTime(d));
-            return d3.rgb(0, Math.round(colorScaleTime(d)), 100).darker( colorScaleDarkerTime(d) );
+            return d3.rgb(0, Math.round(colorScaleTime(d.practiceTime)), 100).darker( colorScaleDarkerTime(d.practiceTime) );
           })
          .style("opacity", 0.75);
 
-        svgTime.selectAll("text")
+        svgTime.selectAll("text.value")
            .data(datasetTime)
            .enter()
            .append("text")
            .text(function(d) {
-              return d;
+              return d.practiceTime;
            })
            .attr("text-anchor", "middle")
            .attr("x", function(d, i) {
               return i * (w / datasetTime.length) + (w / datasetTime.length - barPadding) / 2;
            })
            .attr("y", function(d) {
-              return (h - yScaleTime(d) - (textPadding / 2));
+              return ( h - (xAxisTextPadding + yScaleTime(d.practiceTime)) - (textPadding / 2));
+           })
+           .attr("font-family", "sans-serif")
+           .attr("font-size", "11px")
+           .attr("fill", "black");
+
+        svgTime.selectAll("text.day")
+           .data(datasetTime)
+           .enter()
+           .append("text")
+           .text(function(d, i) {
+              return d.shortDateString;
+           })
+           .attr("text-anchor", "middle")
+           .attr("x", function(d, i) {
+              return i * (w / datasetTime.length) + (w / datasetTime.length - barPadding) / 2;
+           })
+           .attr("y", function(d) {
+              return ( h - (xAxisTextPadding / 3) );
            })
            .attr("font-family", "sans-serif")
            .attr("font-size", "11px")

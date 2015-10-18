@@ -18,6 +18,9 @@ function isSameDate(date1, date2) {
 }
 
 function getLastWeekHistory(history) {
+
+    var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
     var result = [];
     var today = new Date();
     var dateWeek = new Date();
@@ -32,8 +35,11 @@ function getLastWeekHistory(history) {
         if ((historyIndex >= 0) && isSameDate(dateWeek, history[historyIndex].date)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
+            var shortDateString = monthNames[history[historyIndex].date.getMonth()] + " " +
+                                  history[historyIndex].date.getDate();
+
             result.push({
-                date: history[historyIndex].date, 
+                shortDateString: shortDateString, 
                 practiceTime: history[historyIndex].practiceTime
             });
 
@@ -42,8 +48,10 @@ function getLastWeekHistory(history) {
         else {
             console.log("No practice session on this Date: %s", dateWeek.getDate().toString());
 
+            var dateWeekClone = new Date(dateWeek.getTime());
+            
             result.push({
-                date: new Date().setDate(today.getDate() - i), 
+                shortDateString: monthNames[dateWeekClone.getMonth()] + " " + dateWeekClone.getDate(),
                 practiceTime: 0
             });
         }
