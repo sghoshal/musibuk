@@ -155,7 +155,7 @@
 
     <div class="row top30" align ="center">
       <div class="col-md-offset-5 col-md-2">
-        <button type="button" id="btnExerciseSave" class="btn btn-lg btn-primary btn-block">Save</button>
+        <button type="button" id="btnExerciseSave" class="btn btn-lg btn-primary btn-block">Save Progress</button>
       </div>
     </div>
 
@@ -211,6 +211,7 @@
 
     var w = 400;
     var h = 250;
+    var textPadding = Math.round(h / 10);
     var barPadding = 1;
     
     var datasetBpm = [];
@@ -225,6 +226,32 @@
     console.log("DATASET BPM: %s", datasetBpm.toString());
     console.log("DATASET TIME: %s", datasetTime.toString());
     
+    // Create the scale to account for relative compression and expansion of bar graph.
+
+    var yScaleTime = d3.scale.linear()
+                        .domain([0, d3.max(datasetTime, function(d) {
+                          return d;
+                        })])
+                        .range([0, h - textPadding]);
+
+    var yScaleBpm = d3.scale.linear()
+                        .domain([0, d3.max(datasetBpm, function(d) {
+                          return d;
+                        })])
+                        .range([0, h - textPadding]);
+
+    var colorScaleBpm = d3.scale.linear()
+                          .domain([0, d3.max(datasetBpm, function(d) {
+                            return d;
+                          })])
+                          .range([50, 200]);
+
+    var colorScaleTime = d3.scale.linear()
+                          .domain([0, d3.max(datasetTime, function(d) {
+                            return d;
+                          })])
+                          .range([50, 200]);
+                                             
     //Create SVG element
 
     var svgBpm = d3.select("#exercise-analytics-bpm")
@@ -244,19 +271,19 @@
        .enter()
        .append("rect")
        .attr("x", function(d, i) {
-          console.log("OK D: %s", d);
           return i * (w / datasetBpm.length);
        })
        .attr("y", function(d) {
-          return h - (d);
+          return h - yScaleBpm(d);
        })
        .attr("width", w / datasetBpm.length - barPadding)
        .attr("height", function(d) {
-          return d;
+          return yScaleBpm(d);
        })
        .attr("fill", function(d) {
-        return "rgb(0, 0, " + (d * 1) + ")";
-       });
+          return "rgb(0, " + Math.round(colorScaleBpm(d)) + ", " + 150 + ")";
+       })
+       .style("opacity", 0.85);
 
     svgBpm.selectAll("text")
        .data(datasetBpm)
@@ -270,12 +297,13 @@
           return i * (w / datasetBpm.length) + (w / datasetBpm.length - barPadding) / 2;
        })
        .attr("y", function(d) {
-          return h - (d) - 14;
+          // If we use textPadding here instead of a smaller value like textPadding/2,
+          // the text for the max value will get clipped.
+          return (h - yScaleBpm(d) - (textPadding / 2));
        })
        .attr("font-family", "sans-serif")
        .attr("font-size", "11px")
        .attr("fill", "black");
-
 
     // SVG for time practiced
 
@@ -288,15 +316,17 @@
           return i * (w / datasetTime.length);
        })
        .attr("y", function(d) {
-          return h - (d / 2);
+          return h - yScaleTime(d);
        })
        .attr("width", w / datasetTime.length - barPadding)
        .attr("height", function(d) {
-          return (d / 2);
+          return yScaleTime(d);
        })
        .attr("fill", function(d) {
-        return "rgb(0, 0, " + (d * 1) + ")";
-       });
+          return "rgb(0, " + Math.round(colorScaleTime(d)) + ", " + 150 + ")";
+       })
+       .style("opacity", 0.85);
+
 
     svgTime.selectAll("text")
        .data(datasetTime)
@@ -310,7 +340,9 @@
           return i * (w / datasetTime.length) + (w / datasetTime.length - barPadding) / 2;
        })
        .attr("y", function(d) {
-          return h - (d / 2) - 14;
+          // If we use textPadding here instead of a smaller value like textPadding/2,
+          // the text for the max value will get clipped.
+          return (h - yScaleTime(d) - (textPadding / 2));
        })
        .attr("font-family", "sans-serif")
        .attr("font-size", "11px")
