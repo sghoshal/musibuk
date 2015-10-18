@@ -294,7 +294,7 @@
        })
        .style("fill", function(d){ 
           console.log("For daker. Got d: %s %s", d, colorScaleDarkerBpm(d));
-          return d3.rgb(0, Math.round(colorScaleBpm(d)), 200).darker( colorScaleDarkerBpm(d) );
+          return d3.rgb(0, Math.round(colorScaleBpm(d)), 100).darker( colorScaleDarkerBpm(d) );
         })
        .style("opacity", 0.75);
 
@@ -337,7 +337,7 @@
        })
         .style("fill", function(d){ 
           console.log("For daker. Got d: %s %s", d, colorScaleDarkerTime(d));
-          return d3.rgb(0, Math.round(colorScaleTime(d)), 200).darker( colorScaleDarkerTime(d) );
+          return d3.rgb(0, Math.round(colorScaleTime(d)), 100).darker( colorScaleDarkerTime(d) );
         })
        .style("opacity", 0.75);
 

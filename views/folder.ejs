@@ -135,9 +135,10 @@
 
       var w = 400;
       var h = 250;
+      var textPadding = Math.round(h / 10);
       var barPadding = 1;
-      
       var datasetTime = [];
+
       var pastWeekHistory = <%- JSON.stringify(lastWeekHistory) %>;
 
       if (pastWeekHistory.length > 0) {
@@ -146,6 +147,24 @@
         }
 
         console.log("DATASET TIME: %s", datasetTime.toString());
+
+        var yScaleTime = d3.scale.linear()
+                              .domain([0, d3.max(datasetTime, function(d) {
+                                return d;
+                              })])
+                              .range([0, h - textPadding]);
+
+        var colorScaleTime = d3.scale.linear()
+                            .domain([0, d3.max(datasetTime, function(d) {
+                              return d;
+                            })])
+                            .range([50, 200]);
+
+        var colorScaleDarkerTime = d3.scale.linear()
+                                .domain([0, d3.max(datasetTime, function(d) {
+                                  return d;
+                                })])
+                                .range([1, 0.1]);
         
         //Create SVG element
 
@@ -165,15 +184,17 @@
               return i * (w / datasetTime.length);
            })
            .attr("y", function(d) {
-              return h - (d / 10);
+              return h - yScaleTime(d);
            })
            .attr("width", w / datasetTime.length - barPadding)
            .attr("height", function(d) {
-              return d / 10;
+              return yScaleTime(d);
            })
-           .attr("fill", function(d) {
-            return "rgb(0, 0, " + (d * 1) + ")";
-           });
+          .style("fill", function(d){ 
+            console.log("For daker. Got d: %s %s", d, colorScaleDarkerTime(d));
+            return d3.rgb(0, Math.round(colorScaleTime(d)), 100).darker( colorScaleDarkerTime(d) );
+          })
+         .style("opacity", 0.75);
 
         svgTime.selectAll("text")
            .data(datasetTime)
@@ -187,7 +208,7 @@
               return i * (w / datasetTime.length) + (w / datasetTime.length - barPadding) / 2;
            })
            .attr("y", function(d) {
-              return h - (d / 10) - 14;
+              return (h - yScaleTime(d) - (textPadding / 2));
            })
            .attr("font-family", "sans-serif")
            .attr("font-size", "11px")
