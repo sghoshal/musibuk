@@ -186,7 +186,6 @@
            .enter()
            .append("rect")
            .attr("x", function(d, i) {
-              console.log("OK D: %s", d.practiceTime);
               return i * (w / datasetTime.length);
            })
            .attr("y", function(d) {

@@ -18,6 +18,10 @@ function getLastWeekHistory(history) {
     var today = new Date();
     var dateWeek = new Date();
     var historyIndex = history.length - 1;
+    var result = [];
+
+    var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
 
     // for (var i = 0; i < history.length; i++) {
     //     console.log("History %s: date: %s", i, 
@@ -29,13 +33,16 @@ function getLastWeekHistory(history) {
 
         // console.log("Date Week -%s: date: %s", i, 
         //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
+        
+        var shortDateString = monthNames[dateWeek.getMonth()] + " " + dateWeek.getDate();
 
         if ((historyIndex >= 0) && isSameDate(dateWeek, history[historyIndex].date)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
             result.push({
                 bpm: history[historyIndex].bpm, 
-                time: history[historyIndex].practiceTime
+                time: history[historyIndex].practiceTime,
+                shortDateString: shortDateString
             });
 
             historyIndex--;
@@ -45,14 +52,17 @@ function getLastWeekHistory(history) {
 
             result.push({
                 bpm: 0, 
-                time: 0
+                time: 0,
+                shortDateString: shortDateString
             });
         }
     }
 
     for(var i = 0; i < result.length; i++) {
-        console.log("RESULT: %s %s", result[i].bpm, result[i].time);
+        console.log("Exercise Analytics data: BPM/Time/Date = %s/%s/%s", 
+            result[i].bpm, result[i].time, result[i].shortDateString);
     }
+
     return result;
 }
 

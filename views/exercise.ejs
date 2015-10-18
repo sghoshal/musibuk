@@ -225,60 +225,62 @@
     var h = 250;
 
     var textPadding = Math.round(h / 10);
+    var xAxisTextPadding = Math.round(h / 10);    
     var barPadding = 1;
     
-    var datasetBpm = [];
-    var datasetTime = [];
+    var dataset = []
 
     var pastWeekHistory = <%- JSON.stringify(lastWeekHistory) %>;
 
     for (var i = (pastWeekHistory.length - 1); i >= 0; i--) {
-      datasetBpm[(pastWeekHistory.length - 1) - i] = parseInt(pastWeekHistory[i].bpm);
-      datasetTime[(pastWeekHistory.length - 1) - i] = parseInt(pastWeekHistory[i].time);
+      dataset[(pastWeekHistory.length - 1) - i] = {
+        bpm: parseInt(pastWeekHistory[i].bpm),
+        time: parseInt(pastWeekHistory[i].time),
+        shortDateString: pastWeekHistory[i].shortDateString
+      }
     }
 
-    console.log("DATASET BPM: %s", datasetBpm.toString());
-    console.log("DATASET TIME: %s", datasetTime.toString());
+    console.log("DATASET: %s", JSON.stringify(dataset));
     
     // Create the scale to account for relative compression and expansion of bar graph.
 
-    var yScaleTime = d3.scale.linear()
-                        .domain([0, d3.max(datasetTime, function(d) {
-                          return d;
-                        })])
-                        .range([0, h - textPadding]);
-
     var yScaleBpm = d3.scale.linear()
-                        .domain([0, d3.max(datasetBpm, function(d) {
-                          return d;
+                        .domain([0, d3.max(dataset, function(d) {
+                          return d.bpm;
                         })])
-                        .range([0, h - textPadding]);
+                        .range([0, h - (textPadding + xAxisTextPadding)]);
+
+    var yScaleTime = d3.scale.linear()
+                        .domain([0, d3.max(dataset, function(d) {
+                          return d.time;
+                        })])
+                        .range([0, h - (textPadding + xAxisTextPadding)]);
 
     // Color value scale
 
     var colorScaleBpm = d3.scale.linear()
-                          .domain([0, d3.max(datasetBpm, function(d) {
-                            return d;
+                          .domain([0, d3.max(dataset, function(d) {
+                            return d.bpm;
                           })])
                           .range([50, 200]);
 
     var colorScaleTime = d3.scale.linear()
-                          .domain([0, d3.max(datasetTime, function(d) {
-                            return d;
+                          .domain([0, d3.max(dataset, function(d) {
+                            return d.time;
                           })])
                           .range([50, 200]);
 
     // Color shade scale
 
     var colorScaleDarkerBpm = d3.scale.linear()
-                              .domain([0, d3.max(datasetBpm, function(d) {
-                                return d;
+                              .domain([0, d3.max(dataset, function(d) {
+                                return d.bpm;
                               })])
                               .range([1, 0.1]);
 
     var colorScaleDarkerTime = d3.scale.linear()
-                              .domain([0, d3.max(datasetTime, function(d) {
-                                return d;
+                              .domain([0, d3.max(dataset, function(d) {
+                                return d.time;
                               })])
                               .range([1, 0.1]);
                                              
@@ -297,88 +299,119 @@
     // SVG for past BPMs
 
     svgBpm.selectAll("rect")
-      .data(datasetBpm)
+      .data(dataset)
       .enter()
       .append("rect")
       .attr("x", function(d, i) {
-        return i * (w / datasetBpm.length);
+        return i * (w / dataset.length);
       })
       .attr("y", function(d) {
-        return h - yScaleBpm(d);
+        return h - (xAxisTextPadding + yScaleBpm(d.bpm));
       })
-      .attr("width", w / datasetBpm.length - barPadding)
+      .attr("width", w / dataset.length - barPadding)
       .attr("height", function(d) {
-        return yScaleBpm(d);
+        return yScaleBpm(d.bpm);
       })
       .style("fill", function(d){ 
-        console.log("For daker. Got d: %s %s", d, colorScaleDarkerBpm(d));
-        return d3.rgb(0, Math.round(colorScaleBpm(d)), 100).darker( colorScaleDarkerBpm(d) );
+        console.log("For daker. Got d: %s %s", d, colorScaleDarkerBpm(d.bpm));
+        return d3.rgb(0, Math.round(colorScaleBpm(d.bpm)), 100).darker( colorScaleDarkerBpm(d.bpm) );
       })
       .style("opacity", 0.75);
 
-    svgBpm.selectAll("text")
-      .data(datasetBpm)
+    svgBpm.selectAll("text.value")
+      .data(dataset)
       .enter()
       .append("text")
       .text(function(d) {
-        return d;
+        return d.bpm;
       })
       .attr("text-anchor", "middle")
       .attr("x", function(d, i) {
-        return i * (w / datasetBpm.length) + (w / datasetBpm.length - barPadding) / 2;
+        return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
       })
       .attr("y", function(d) {
-        // If we use textPadding here instead of a smaller value like textPadding/2,
-        // the text for the max value will get clipped.
-        return (h - yScaleBpm(d) - (textPadding / 2));
+        return ( h - (xAxisTextPadding + yScaleBpm(d.bpm)) - (textPadding / 2));
       })
       .attr("font-family", "sans-serif")
       .attr("font-size", "11px")
       .attr("fill", "black");
+
+    svgBpm.selectAll("text.day")
+       .data(dataset)
+       .enter()
+       .append("text")
+       .text(function(d, i) {
+          return d.shortDateString;
+       })
+       .attr("text-anchor", "middle")
+       .attr("x", function(d, i) {
+          return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
+       })
+       .attr("y", function(d) {
+          return ( h - (xAxisTextPadding / 3) );
+       })
+       .attr("font-family", "sans-serif")
+       .attr("font-size", "11px")
+       .attr("fill", "black");
 
     // SVG for time practiced
 
     svgTime.selectAll("rect")
-      .data(datasetTime)
+      .data(dataset)
       .enter()
       .append("rect")
       .attr("x", function(d, i) {
-        console.log("OK D: %s", d);
-        return i * (w / datasetTime.length);
+        return i * (w / dataset.length);
       })
       .attr("y", function(d) {
-        return h - yScaleTime(d);
+        return h - (xAxisTextPadding + yScaleTime(d.time));
       })
-      .attr("width", w / datasetTime.length - barPadding)
+      .attr("width", w / dataset.length - barPadding)
       .attr("height", function(d) {
-        return yScaleTime(d);
+        return yScaleTime(d.time);
       })
       .style("fill", function(d){ 
-        console.log("For daker. Got d: %s %s", d, colorScaleDarkerTime(d));
-        return d3.rgb(0, Math.round(colorScaleTime(d)), 100).darker( colorScaleDarkerTime(d) );
+        console.log("For daker. Got d: %s %s", d.time, colorScaleDarkerTime(d.time));
+        return d3.rgb(0, Math.round(colorScaleTime(d.time)), 100).darker( colorScaleDarkerTime(d.time) );
       })
       .style("opacity", 0.75);
 
 
-    svgTime.selectAll("text")
-      .data(datasetTime)
+    svgTime.selectAll("text.value")
+      .data(dataset)
       .enter()
       .append("text")
       .text(function(d) {
-        return d;
+        return d.time;
       })
       .attr("text-anchor", "middle")
       .attr("x", function(d, i) {
-        return i * (w / datasetTime.length) + (w / datasetTime.length - barPadding) / 2;
+        return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
       })
       .attr("y", function(d) {
-        // If we use textPadding here instead of a smaller value like textPadding/2,
-        // the text for the max value will get clipped.
-        return (h - yScaleTime(d) - (textPadding / 2));
+        return ( h - (xAxisTextPadding + yScaleTime(d.time)) - (textPadding / 2));
       })
       .attr("font-family", "sans-serif")
       .attr("font-size", "11px")
       .attr("fill", "black");
+
+    svgTime.selectAll("text.day")
+       .data(dataset)
+       .enter()
+       .append("text")
+       .text(function(d, i) {
+          return d.shortDateString;
+       })
+       .attr("text-anchor", "middle")
+       .attr("x", function(d, i) {
+          return i * (w / dataset.length) + (w / dataset.length - barPadding) / 2;
+       })
+       .attr("y", function(d) {
+          return ( h - (xAxisTextPadding / 3) );
+       })
+       .attr("font-family", "sans-serif")
+       .attr("font-size", "11px")
+       .attr("fill", "black");
 
   </script>
 
