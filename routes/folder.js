@@ -49,7 +49,7 @@ function getLastWeekHistory(history) {
             console.log("No practice session on this Date: %s", dateWeek.getDate().toString());
 
             var dateWeekClone = new Date(dateWeek.getTime());
-            
+
             result.push({
                 shortDateString: monthNames[dateWeekClone.getMonth()] + " " + dateWeekClone.getDate(),
                 practiceTime: 0
@@ -90,7 +90,8 @@ function renderPage(req, res, next, folder, lastWeekHistory) {
                                        lastPracticed: "Never",
                                        lastPracticeTime: 0,
                                        totalPracticeTime: 0,
-                                       errorMsg: req.flash('errorMsg') });
+                                       errorMsg: req.flash('errorMsg'),
+                                       lastWeekHistory: lastWeekHistory });
     }
     else {
         mongoModel.Exercise.find( {"_id": { $in: folderExerciseIdList } }, function(err, exercises) {
