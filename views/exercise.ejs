@@ -251,6 +251,18 @@
                             return d;
                           })])
                           .range([50, 200]);
+
+    var colorScaleDarkerBpm = d3.scale.linear()
+                              .domain([0, d3.max(datasetBpm, function(d) {
+                                return d;
+                              })])
+                              .range([1, 0.1]);
+
+    var colorScaleDarkerTime = d3.scale.linear()
+                              .domain([0, d3.max(datasetTime, function(d) {
+                                return d;
+                              })])
+                              .range([1, 0.1]);
                                              
     //Create SVG element
 
@@ -280,10 +292,11 @@
        .attr("height", function(d) {
           return yScaleBpm(d);
        })
-       .attr("fill", function(d) {
-          return "rgb(0, " + Math.round(colorScaleBpm(d)) + ", " + 150 + ")";
-       })
-       .style("opacity", 0.85);
+       .style("fill", function(d){ 
+          console.log("For daker. Got d: %s %s", d, colorScaleDarkerBpm(d));
+          return d3.rgb(0, Math.round(colorScaleBpm(d)), 200).darker( colorScaleDarkerBpm(d) );
+        })
+       .style("opacity", 0.75);
 
     svgBpm.selectAll("text")
        .data(datasetBpm)
@@ -322,10 +335,11 @@
        .attr("height", function(d) {
           return yScaleTime(d);
        })
-       .attr("fill", function(d) {
-          return "rgb(0, " + Math.round(colorScaleTime(d)) + ", " + 150 + ")";
-       })
-       .style("opacity", 0.85);
+        .style("fill", function(d){ 
+          console.log("For daker. Got d: %s %s", d, colorScaleDarkerTime(d));
+          return d3.rgb(0, Math.round(colorScaleTime(d)), 200).darker( colorScaleDarkerTime(d) );
+        })
+       .style("opacity", 0.75);
 
 
     svgTime.selectAll("text")
