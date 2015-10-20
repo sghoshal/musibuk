@@ -11,13 +11,6 @@ function fetchFolderExercises(req, res, next) {
     getFolderFromIdAndRenderPage(req, res, next, folderId);
 }
 
-function isSameDate(date1, date2) {
-
-    return ((date1.getFullYear() === date2.getFullYear()) &&
-            (date1.getMonth() === date2.getMonth()) &&
-            (date1.getDate() === date2.getDate()));
-}
-
 function getLastWeekHistory(history) {
 
     var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -33,7 +26,7 @@ function getLastWeekHistory(history) {
         // console.log("Date Week -%s: date: %s", i, 
         //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
 
-        if ((historyIndex >= 0) && isSameDate(dateWeek, history[historyIndex].date)) {
+        if ((historyIndex >= 0) && timeUtil.isSameDate(dateWeek, history[historyIndex].date)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
             var shortDateString = monthNames[history[historyIndex].date.getMonth()] + " " +
