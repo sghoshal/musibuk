@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 
 var mongoModel = require('../mongo/models');
+var timeUtil = require('../utils/time_util') 
 
 var router = express.Router();
 
@@ -89,7 +90,7 @@ function renderPage(req, res, next, folder, lastWeekHistory) {
                                        exercises: [],
                                        lastPracticed: "Never",
                                        lastPracticeTime: 0,
-                                       totalPracticeTime: 0,
+                                       totalPracticeTime: timeUtil.convertSecondsToTimeString(0),
                                        errorMsg: req.flash('errorMsg'),
                                        lastWeekHistory: lastWeekHistory });
     }
@@ -105,8 +106,8 @@ function renderPage(req, res, next, folder, lastWeekHistory) {
                                        folderId: folder._id,
                                        exercises: exercises,
                                        lastPracticed: folder.lastUpdated,
-                                       lastPracticeTime: folder.lastPracticeTime,
-                                       totalPracticeTime: folder.totalPracticeTime,
+                                       lastPracticeTime: timeUtil.convertSecondsToTimeString(folder.lastPracticeTime),
+                                       totalPracticeTime: timeUtil.convertSecondsToTimeString(folder.totalPracticeTime),
                                        errorMsg: req.flash('errorMsg'),
                                        lastWeekHistory: lastWeekHistory });
             }

@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var mongoModel = require('../mongo/models');
+var timeUtil = require('../utils/time_util')
 
 var router = express.Router();
 
@@ -99,11 +100,7 @@ router.get('/:exerciseId', function(req, res, next) {
             var exercise = exerciseDoc[0];
             console.log('Loading exercise page document: %s', exercise);
 
-            var totalTimeHours = parseInt( exercise.totalPracticeTime / 3600 );
-            var totalTimeMinutes = parseInt( exercise.totalPracticeTime / 60 ) % 60;
-            var totalTimeSeconds = parseInt( exercise.totalPracticeTime % 60 );
-
-            var totalPracticeTimeString = totalTimeHours + " hours, " + totalTimeMinutes + " minutes, " + totalTimeSeconds + " seconds";
+            var totalPracticeTimeString = timeUtil.convertSecondsToTimeString(exercise.totalPracticeTime);
 
             if(exercise.folderId !== 'root') {
 
