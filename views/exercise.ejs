@@ -133,7 +133,7 @@
     <hr>
 
     <!-- Analytics Div for BPM and Time practiced over last week -->
-    
+
     <div class="row top20">
       <div class="col-md-6" id="exercise-analytics-bpm">
         <p class="lead" align="center">BPM progress</p>
@@ -202,7 +202,13 @@
   <!-- D3 visualization - Exercise Analytics -->
 
   <script type="text/javascript">
-    
+ 
+    function convertSecondsToShortTime(seconds) {
+
+      var totalTimeMinutes = parseInt( seconds / 60 );
+      return totalTimeMinutes + " mins";
+    }
+
     //Width and height of SVG
 
     var w = 400;
@@ -213,6 +219,7 @@
     var barPadding = 1;
     
     var dataset = []
+    
 
     var pastWeekHistory = <%- JSON.stringify(lastWeekHistory) %>;
 
@@ -225,7 +232,7 @@
     }
 
     console.log("DATASET: %s", JSON.stringify(dataset));
-    
+
     // Create the scale to account for relative compression and expansion of bar graph.
 
     var yScaleBpm = d3.scale.linear()
@@ -366,7 +373,7 @@
       .enter()
       .append("text")
       .text(function(d) {
-        return d.time;
+        return convertSecondsToShortTime(d.time);
       })
       .attr("text-anchor", "middle")
       .attr("x", function(d, i) {

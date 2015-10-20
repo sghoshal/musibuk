@@ -142,6 +142,12 @@
 
       var pastWeekHistory = <%- JSON.stringify(lastWeekHistory) %>;
 
+      function convertSecondsToShortTime(seconds) {
+
+        var totalTimeMinutes = parseInt( seconds / 60 );
+        return totalTimeMinutes + " mins";
+      }
+
       if (pastWeekHistory.length > 0) {
         for (var i = (pastWeekHistory.length - 1); i >= 0; i--) {
 
@@ -205,7 +211,7 @@
            .enter()
            .append("text")
            .text(function(d) {
-              return d.practiceTime;
+              return convertSecondsToShortTime(d.practiceTime);
            })
            .attr("text-anchor", "middle")
            .attr("x", function(d, i) {

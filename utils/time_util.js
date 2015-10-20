@@ -1,4 +1,5 @@
 module.exports = {
+    
     convertSecondsToTimeString: function(seconds) {
         var totalTimeHours = parseInt( seconds / 3600 );
         var totalTimeMinutes = parseInt( seconds / 60 ) % 60;
