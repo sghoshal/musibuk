@@ -132,24 +132,8 @@
 
     <hr>
 
-    <!-- Past Sessions -->
-
-    <div class="row top20">
-      <div class="col-md-3">
-        <p class="lead">Your past sessions</p>
-      </div>
-
-      <div class="col-md-9">
-        <ul>
-          <% for (var i = history.length - 1; i >= 0; i--) {%>
-            <li><%= history[i] %></li>
-          <% } %>
-        </ul>
-      </div>
-    </div>
-
-    <hr>
-
+    <!-- Analytics Div for BPM and Time practiced over last week -->
+    
     <div class="row top20">
       <div class="col-md-6" id="exercise-analytics-bpm">
         <p class="lead" align="center">BPM progress</p>
