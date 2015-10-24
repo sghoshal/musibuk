@@ -20,13 +20,27 @@ function getLastWeekHistory(history) {
     var dateWeek = new Date();
     var historyIndex = history.length - 1;
 
+    // Log the history argument date.
+    // console.log("The history argument: ");
+    // for(var i = 0; i < history.length; i++) {
+    //     var utcDate = timeUtil.convertDateToUtc(history[i].date);
+    //     console.log("%s-%s-%s", utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate());
+    // }
+    
+
     for (var i = 0; i < 7; i++) {
         dateWeek.setDate(today.getDate() - i);
+        var currentHistoryElement = history[historyIndex];
 
-        // console.log("Date Week -%s: date: %s", i, 
-        //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
+        // NOTE: Mongo stores date in UTC but returns in the client's timezone. We want to convert to UTC for comparison.
+        var utcConvertedHistoryDate = timeUtil.convertDateToUtc(currentHistoryElement.date);
+        
+        // console.log("Date Week: Today minux %s = %s", i, timeUtil.getFullDateString(dateWeek));
+        // console.log("Current History Index = %s. Is Current Date Week same as Current history at historyIndex? Comparing in UTC ((%s) and (%s) = %s ", 
+        //                 historyIndex, dateWeek, currentHistoryElement.date, timeUtil.isSameDate(dateWeek, utcConvertedHistoryDate));
 
-        if ((historyIndex >= 0) && timeUtil.isSameDate(dateWeek, history[historyIndex].date)) {
+        // Now check if the current date of week and current history date (UTC) are equal. If so, we have a practice session on this date week.
+        if ((historyIndex >= 0) && timeUtil.isSameDate(dateWeek, utcConvertedHistoryDate)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
             var shortDateString = monthNames[history[historyIndex].date.getMonth()] + " " +
@@ -50,7 +64,6 @@ function getLastWeekHistory(history) {
             });
         }
     }
-
     return result;
 }
 
@@ -162,7 +175,7 @@ function createExerciseInFolder(req, res, next) {
                                     }
                                 });
         }
-    });        
+    });
 }
 
 router.get('/:folderId', fetchFolderExercises);

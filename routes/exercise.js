@@ -30,20 +30,25 @@ function getLastWeekHistory(history) {
     //         history[i].date.getFullYear().toString() + history[i].date.getMonth().toString() + history[i].date.getDate().toString())
     // }
 
+
+
     for (var i = 0; i < 7; i++) {
         dateWeek.setDate(today.getDate() - i);
+
+        var currentHistoryElement = history[historyIndex];
+        var utcConvertedHistoryDate = timeUtil.convertDateToUtc(currentHistoryElement.date);
 
         // console.log("Date Week -%s: date: %s", i, 
         //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
         
         var shortDateString = monthNames[dateWeek.getMonth()] + " " + dateWeek.getDate();
 
-        if ((historyIndex >= 0) && isSameDate(dateWeek, history[historyIndex].date)) {
+        if ((historyIndex >= 0) && isSameDate(dateWeek, utcConvertedHistoryDate)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
             result.push({
-                bpm: history[historyIndex].bpm, 
-                time: history[historyIndex].practiceTime,
+                bpm: currentHistoryElement.bpm, 
+                time: currentHistoryElement.practiceTime,
                 shortDateString: shortDateString
             });
 

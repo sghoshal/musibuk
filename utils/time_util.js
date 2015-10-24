@@ -31,6 +31,19 @@ module.exports = {
         return totalPracticeTimeString;
     },
 
+    getFullDateString: function(inputDate) {
+        var year = inputDate.getFullYear();
+        var month = inputDate.getMonth() + 1;       // Because the month returned is from 0 - 11
+        var dateInMonth = inputDate.getDate();
+
+        return (year.toString() + "-" + month.toString() + "-" + dateInMonth.toString());
+    },
+
+    convertDateToUtc: function(date) { 
+        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 
+                        date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); 
+    },
+
     isSameDate: function(date1, date2) {
 
         return ((date1.getFullYear() === date2.getFullYear()) &&
