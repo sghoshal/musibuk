@@ -39,6 +39,13 @@ module.exports = {
         return (year.toString() + "-" + month.toString() + "-" + dateInMonth.toString());
     },
 
+    getShortDateString: function(inputDate) {
+        var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+                       
+        return monthNames[inputDate.getMonth()] + " " + inputDate.getDate();
+    },
+
     convertDateToUtc: function(date) { 
         return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 
                         date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); 

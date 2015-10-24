@@ -13,8 +13,6 @@ function fetchFolderExercises(req, res, next) {
 
 function getLastWeekHistory(history) {
 
-    var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
     var result = [];
     var today = new Date();
     var dateWeek = new Date();
@@ -43,8 +41,7 @@ function getLastWeekHistory(history) {
         if ((historyIndex >= 0) && timeUtil.isSameDate(dateWeek, utcConvertedHistoryDate)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
-            var shortDateString = monthNames[history[historyIndex].date.getMonth()] + " " +
-                                  history[historyIndex].date.getDate();
+            var shortDateString = timeUtil.getShortDateString(currentHistoryElement.date);
 
             result.push({
                 shortDateString: shortDateString, 
@@ -59,7 +56,7 @@ function getLastWeekHistory(history) {
             var dateWeekClone = new Date(dateWeek.getTime());
 
             result.push({
-                shortDateString: monthNames[dateWeekClone.getMonth()] + " " + dateWeekClone.getDate(),
+                shortDateString: timeUtil.getShortDateString(dateWeekClone),
                 practiceTime: 0
             });
         }

@@ -22,9 +22,7 @@ function getLastWeekHistory(history) {
     var historyIndex = history.length - 1;
     var result = [];
 
-    var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-
+    
     // for (var i = 0; i < history.length; i++) {
     //     console.log("History %s: date: %s", i, 
     //         history[i].date.getFullYear().toString() + history[i].date.getMonth().toString() + history[i].date.getDate().toString())
@@ -41,8 +39,8 @@ function getLastWeekHistory(history) {
         // console.log("Date Week -%s: date: %s", i, 
         //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
         
-        var shortDateString = monthNames[dateWeek.getMonth()] + " " + dateWeek.getDate();
-
+        var shortDateString = timeUtil.getShortDateString(dateWeek);
+        
         if ((historyIndex >= 0) && isSameDate(dateWeek, utcConvertedHistoryDate)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
