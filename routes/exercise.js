@@ -21,19 +21,24 @@ function getLastWeekHistory(history) {
     var dateWeek = new Date();
     var historyIndex = history.length - 1;
     var result = [];
-
     
     // for (var i = 0; i < history.length; i++) {
     //     console.log("History %s: date: %s", i, 
     //         history[i].date.getFullYear().toString() + history[i].date.getMonth().toString() + history[i].date.getDate().toString())
     // }
 
-
-
     for (var i = 0; i < 7; i++) {
         dateWeek.setDate(today.getDate() - i);
 
         var currentHistoryElement = history[historyIndex];
+        if (typeof currentHistoryElement === 'undefined' || currentHistoryElement === null) {
+            currentHistoryElement = {
+                date:           new Date(dateWeek),
+                bpm:            0,
+                practiceTime:   0
+            }
+        }
+
         var utcConvertedHistoryDate = timeUtil.convertDateToUtc(currentHistoryElement.date);
 
         // console.log("Date Week -%s: date: %s", i, 
