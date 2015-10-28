@@ -31,7 +31,9 @@ function getLastWeekHistory(history) {
         dateWeek.setDate(today.getDate() - i);
 
         var currentHistoryElement = history[historyIndex];
+        
         if (typeof currentHistoryElement === 'undefined' || currentHistoryElement === null) {
+            console.log("Current History Element is undefined. Creating a dummy history element.")
             currentHistoryElement = {
                 date:           new Date(dateWeek),
                 bpm:            0,
@@ -41,9 +43,12 @@ function getLastWeekHistory(history) {
 
         var utcConvertedHistoryDate = timeUtil.convertDateToUtc(currentHistoryElement.date);
 
-        // console.log("Date Week -%s: date: %s", i, 
+        // console.log("Date Week - %s: date: %s", i, 
         //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
         
+        // console.log("Is %s / %s = Same Date? %s", dateWeek, utcConvertedHistoryDate, 
+        //     isSameDate(dateWeek, utcConvertedHistoryDate));
+
         var shortDateString = timeUtil.getShortDateString(dateWeek);
         
         if ((historyIndex >= 0) && isSameDate(dateWeek, utcConvertedHistoryDate)) {

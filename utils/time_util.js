@@ -46,9 +46,8 @@ module.exports = {
         return monthNames[inputDate.getMonth()] + " " + inputDate.getDate();
     },
 
-    convertDateToUtc: function(date) { 
-        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 
-                        date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); 
+    convertDateToUtc: function(inputDate) { 
+        return new Date(inputDate.toISOString()); 
     },
 
     isSameDate: function(date1, date2) {
