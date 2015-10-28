@@ -30,9 +30,17 @@ function getLastWeekHistory(history) {
         dateWeek.setDate(today.getDate() - i);
         var currentHistoryElement = history[historyIndex];
 
+        if (typeof currentHistoryElement === 'undefined' || currentHistoryElement === null) {
+            console.log("Current History Element is undefined. Creating a dummy history element.")
+            currentHistoryElement = {
+                date:           new Date(dateWeek),
+                practiceTime:   0
+            }
+        }
+
         // NOTE: Mongo stores date in UTC but returns in the client's timezone. We want to convert to UTC for comparison.
         var utcConvertedHistoryDate = timeUtil.convertDateToUtc(currentHistoryElement.date);
-        
+
         // console.log("Date Week: Today minux %s = %s", i, timeUtil.getFullDateString(dateWeek));
         // console.log("Current History Index = %s. Is Current Date Week same as Current history at historyIndex? Comparing in UTC ((%s) and (%s) = %s ", 
         //                 historyIndex, dateWeek, currentHistoryElement.date, timeUtil.isSameDate(dateWeek, utcConvertedHistoryDate));
