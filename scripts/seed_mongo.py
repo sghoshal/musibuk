@@ -8,7 +8,8 @@ database = 'musibuk'
 mongo_uri = 'mongodb://' + host_name + ':' + str(port) + '/' + database
 test_user_email = 'test@mb.com'
 
-def create_exercises_in_root_folder(exercises) :
+
+def create_exercises_in_root_folder(exercises):
     root_exercise_list = ['Random noodling around', 'Misc']
     created_exercises_ids = []
 
@@ -97,7 +98,6 @@ def main():
     # Collections
     exercises = db['exercises']
     folders = db['folders']
-    users = db['users']
 
     root_stack = "root"
 
@@ -118,6 +118,7 @@ def main():
 
     created_folders_ids = create_folders(folders, root_stack)
     print "Created Root Folders: %s" % created_folders_ids
+
 
 if __name__ == "__main__":
     main()
