@@ -40,7 +40,7 @@ var exerciseSchema = new Schema({
 });
 
 // The combination of exercise name and the folder name should be unique.
-exerciseSchema.index({ user_id: 1, name: 1, folder: 1 }, { unique: true } );
+exerciseSchema.index({ user_id: 1, name: 1, folderId: 1 }, { unique: true } );
 
 module.exports.Exercise = mongoose.model('exercise', exerciseSchema );
 
