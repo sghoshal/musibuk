@@ -10,18 +10,6 @@ class Folder:
         Folder(self)
 
     @staticmethod
-    def hello_world():
-        print "Hello world from folder class"
-
-    def create_folders(collection_folders, folder_list, stack):
-        created_folders = []
-
-        for folder_name in folder_list:
-            created_folders.append(Folder.create_folder(collection_folders, folder_name, stack))
-
-        return created_folders
-
-    @staticmethod
     def create_folder(collection_folders, folder_name, stack):
         today = datetime.utcnow()
         created_folder = collection_folders.insert_one(
@@ -77,7 +65,7 @@ class Folder:
     @staticmethod
     def update_folder_with_practice_session(collection_folders, folder, practice_session, ex_last_practice_time):
 
-        print "Original Folder: %s" % folder
+        # print "Original Folder: %s" % folder
 
         new_folder = {
             'createdTime': folder['createdTime'],
@@ -111,7 +99,7 @@ class Folder:
         # - This is a new practice session. Add a new entry to the history list
 
         if len(original_folder_history_list) > 0:
-            print "Length of folder history > 0 and = %s\n" % len(original_folder_history_list)
+            # print "Length of folder history > 0 and = %s\n" % len(original_folder_history_list)
 
             found_history_tuple = Folder.is_history_present(original_folder_history_list, practice_session['date'])
 
@@ -119,19 +107,19 @@ class Folder:
                 found_history = found_history_tuple[0]
                 index = found_history_tuple[1]
 
-                print "FOUND!\n"
+                # print "FOUND!\n"
                 new_history_entry['date'] = practice_session['date']
                 new_history_entry['practiceTime'] = found_history['practiceTime'] + practice_session['practiceTime']
 
                 new_folder_history_list[index] = new_history_entry
             else:
-                print "NOPE. COULDNT FIND IT BRO!\n"
+                # print "NOPE. COULDNT FIND IT BRO!\n"
                 new_history_entry['date'] = practice_session['date']
                 new_history_entry['practiceTime'] = practice_session['practiceTime']
 
                 new_folder_history_list.append(new_history_entry)
         else:
-            print "Length of folder history = 0"
+            # print "Length of folder history = 0"
             new_history_entry['date'] = practice_session['date']
             new_history_entry['practiceTime'] = practice_session['practiceTime']
 
@@ -146,15 +134,11 @@ class Folder:
             return_document=ReturnDocument.AFTER
         )
 
-        print "Done! Updated to: %s\n\n" % replaced_folder
+        # print "Done! Updated to: %s\n\n" % replaced_folder
         return replaced_folder
 
     @staticmethod
     def is_history_present(history_list, input_date):
-        print "Trying to search for history with Date: %s" % input_date.date()
+        # print "Trying to search for history with Date: %s" % input_date.date()
         found_history = next(((d, index) for (index, d) in enumerate(history_list) if d['date'].date() == input_date.date()), None)
         return found_history
-
-    @staticmethod
-    def is_same_date(date1, date2):
-        return date1.date() == date2.date()
