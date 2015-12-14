@@ -39,11 +39,35 @@ class Folder:
         return created_folder
 
     @staticmethod
-    def delete_folder_exercises(exercises, folder_name):
-        num_rows_deleted = exercises.delete_many(
+    def delete_folder_exercises(collection_exercises, folder_name):
+        num_rows_deleted = collection_exercises.delete_many(
             {
                 "user_id": Constants.TEST_USER_EMAIL,
                 "folderId": folder_name
             }
         )
         return num_rows_deleted.deleted_count
+
+    @staticmethod
+    def get_all_folders(collection_folders):
+        documents = []
+
+        cursor = collection_folders.find({})
+
+        for document in cursor:
+            # doc_attributes = {}
+            #
+            # for key, value in document.iteritems():
+            #     if key == 'user_id':
+            #         doc_attributes[key] = value
+            #     elif key == '_id':
+            #         doc_attributes[key] = value
+            #     elif key == 'name':
+            #         doc_attributes[key] = value
+            #     elif key == 'stack':
+            #         doc_attributes[key] = value
+
+            print "ID type: %s" % type(document['_id'])
+            documents.append(document)
+
+        return documents

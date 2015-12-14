@@ -3,8 +3,8 @@ class Constants:
     PORT = 27017
     DATABASE = 'musibuk'
     MONGO_URI = 'mongodb://' + HOST + ':' + str(PORT) + '/' + DATABASE
-    COLLECTION_FOLDER = 'folder'
-    COLLECTION_EXERCISE = 'exercise'
+    COLLECTION_FOLDER = 'folders'
+    COLLECTION_EXERCISE = 'exercises'
 
     TEST_USER_EMAIL = 'test@mb.com'
     ROOT_FOLDER_ID = "root"

@@ -15,11 +15,24 @@ def create_folders_and_exercises(collection_folders, collection_exercises, folde
         if folder_created.acknowledged:
             exercises = folders_exercises_to_create.get(folder_name)
             print "-- Creating exercises: %s" % exercises
-            Exercise.create_exercises_in_folder(collection_exercises, collection_folders, exercises, folder_created.inserted_id)
+            Exercise.create_exercises_in_folder(collection_exercises, collection_folders, exercises,
+                                                folder_created.inserted_id)
             print "Done!"
 
         else:
             print "Folder %s was not created succesfully." % folder_name
+
+
+def create_practice_sessions(collection_folders, collection_exercises):
+    print "Fetching all folders"
+    all_folders = Folder.get_all_folders(collection_folders)
+
+    for folder in all_folders:
+        folder_exercises = folder['exercises']
+
+        for each_exercise_id in folder_exercises:
+            # print "Adding a practice session to %s" % each_exercise_id
+            Exercise.add_practice_sessions(collection_exercises, each_exercise_id)
 
 
 def main():
@@ -47,6 +60,9 @@ def main():
                                  collection_exercises,
                                  Constants.FOLDER_EXERCISES,
                                  Constants.ROOT_STACK_ID)
+
+    create_practice_sessions(collection_folders, collection_exercises)
+
 
 if __name__ == "__main__":
     main()
