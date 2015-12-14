@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from datetime import datetime, timedelta
 
 from modules.constants import Constants
 from modules.exercise import Exercise
@@ -20,11 +21,10 @@ def create_folders_and_exercises(collection_folders, collection_exercises, folde
             print "Done!"
 
         else:
-            print "Folder %s was not created succesfully." % folder_name
+            print "Folder %s was not created successfully." % folder_name
 
 
 def create_practice_sessions(collection_folders, collection_exercises):
-    print "Fetching all folders"
     all_folders = Folder.get_all_folders(collection_folders)
 
     for folder in all_folders:
@@ -32,7 +32,18 @@ def create_practice_sessions(collection_folders, collection_exercises):
 
         for each_exercise_id in folder_exercises:
             # print "Adding a practice session to %s" % each_exercise_id
-            Exercise.add_practice_sessions(collection_exercises, each_exercise_id)
+            today = datetime.utcnow()
+
+            for i in range(10, -1, -1):
+                practice_session_date = today - timedelta(i)
+                updated_exercise = Exercise.add_practice_session(collection_exercises,
+                                                                 each_exercise_id,
+                                                                 practice_session_date)
+                ex_latest_session = updated_exercise['history'][-1]
+                folder = Folder.update_folder_with_practice_session(collection_folders,
+                                                                    folder,
+                                                                    ex_latest_session,
+                                                                    updated_exercise['lastPracticeTime'])
 
 
 def main():

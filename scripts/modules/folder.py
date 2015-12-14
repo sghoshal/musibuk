@@ -1,5 +1,8 @@
+import copy
+
 from datetime import datetime
 from constants import Constants
+from pymongo import ReturnDocument
 
 
 class Folder:
@@ -67,7 +70,91 @@ class Folder:
             #     elif key == 'stack':
             #         doc_attributes[key] = value
 
-            print "ID type: %s" % type(document['_id'])
             documents.append(document)
 
         return documents
+
+    @staticmethod
+    def update_folder_with_practice_session(collection_folders, folder, practice_session, ex_last_practice_time):
+
+        print "Original Folder: %s" % folder
+
+        new_folder = {
+            'createdTime': folder['createdTime'],
+            'entryType': folder['entryType'],
+            'exercises': folder['exercises'],
+            'name': folder['name'],
+            'stack': folder['stack'],
+            'user_id': folder['user_id']
+        }
+
+        # If the practice session's date is the same as the last updated date of the folder, then:
+        #   - lastPracticeTime should be added
+        #   - otherwise this is a new lastPracticeTime
+
+        if practice_session['date'] == folder['lastUpdated']:
+            new_folder['lastPracticeTime'] = folder['lastPracticeTime'] + ex_last_practice_time
+        else:
+            new_folder['lastPracticeTime'] = ex_last_practice_time
+
+        new_folder['lastUpdated'] = practice_session['date']
+        new_folder['totalPracticeTime'] = folder['totalPracticeTime'] + practice_session['practiceTime']
+
+        original_folder_history_list = folder['history']
+        new_folder_history_list = copy.deepcopy(original_folder_history_list)
+        new_history_entry = {}
+
+        # If there is a history already present, then check if the latest history is on the same day as this session:
+        # - If yes, update the latest history by adding this session's time to the existing time.
+        # - Else this is a new practice session - so add a new entry to the history list.
+        # Else:
+        # - This is a new practice session. Add a new entry to the history list
+
+        if len(original_folder_history_list) > 0:
+            print "Length of folder history > 0 and = %s\n" % len(original_folder_history_list)
+
+            found_history_tuple = Folder.is_history_present(original_folder_history_list, practice_session['date'])
+
+            if found_history_tuple is not None:
+                found_history = found_history_tuple[0]
+                index = found_history_tuple[1]
+
+                print "FOUND!\n"
+                new_history_entry['date'] = practice_session['date']
+                new_history_entry['practiceTime'] = found_history['practiceTime'] + practice_session['practiceTime']
+
+                new_folder_history_list[index] = new_history_entry
+            else:
+                print "NOPE. COULDNT FIND IT BRO!\n"
+                new_history_entry['date'] = practice_session['date']
+                new_history_entry['practiceTime'] = practice_session['practiceTime']
+
+                new_folder_history_list.append(new_history_entry)
+        else:
+            print "Length of folder history = 0"
+            new_history_entry['date'] = practice_session['date']
+            new_history_entry['practiceTime'] = practice_session['practiceTime']
+
+            new_folder_history_list.append(new_history_entry)
+
+        new_folder['history'] = new_folder_history_list
+        # print "Updating folder to %s" % new_folder
+
+        replaced_folder = collection_folders.find_one_and_replace(
+            {'_id': folder['_id']},
+            new_folder,
+            return_document=ReturnDocument.AFTER
+        )
+
+        print "Done! Updated to: %s\n\n" % replaced_folder
+        return replaced_folder
+
+    @staticmethod
+    def is_history_present(history_list, input_date):
+        print "Trying to search for history with Date: %s" % input_date.date()
+        found_history = next(((d, index) for (index, d) in enumerate(history_list) if d['date'].date() == input_date.date()), None)
+        return found_history
+
+    @staticmethod
+    def is_same_date(date1, date2):
+        return date1.date() == date2.date()

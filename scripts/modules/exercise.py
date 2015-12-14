@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
-from constants import Constants
-from bson.objectid import ObjectId
-
 import random
+
+from datetime import datetime
+from constants import Constants
+from pymongo import ReturnDocument
 
 
 class Exercise:
@@ -60,39 +60,36 @@ class Exercise:
     def generate_random_session():
         # Generate a random BPM and time within certail limits
         bpm = random.randint(120, 140)
-        practice_time = random.randint(5 * 60, 15 * 60)
+        practice_time = random.randint(5 * 60, 10 * 60)
         return (bpm, practice_time)
 
     @staticmethod
-    def add_practice_sessions(collection_exercises, ex_id):
+    def add_practice_session(collection_exercises, ex_id, practice_session_date):
 
-        today = datetime.utcnow()
+        practice_session = {}
+        random_session = Exercise.generate_random_session()
 
-        for i in range(30, 0, -1):
-            practice_session = {}
-            random_session = Exercise.generate_random_session()
-            practice_date = today - timedelta(i)
+        practice_session['date'] = practice_session_date
+        practice_session['bpm'] = random_session[0]
+        practice_session['practiceTime'] = random_session[1]
 
-            practice_session['date'] = practice_date
-            practice_session['bpm'] = random_session[0]
-            practice_session['practiceTime'] = random_session[1]
-
-            updated_exercise = collection_exercises.update_one(
-                {'_id': ex_id},
-                {
-                    '$push': {
-                        'history': practice_session
-                    },
-                    '$inc': {
-                        'totalPracticeTime': random_session[1]
-                    },
-                    '$set': {
-                        'lastPracticeTime': random_session[1]
-                    },
-                    '$set': {
-                        'lastUpdated': practice_date
-                    }
+        updated_exercise = collection_exercises.find_one_and_update(
+            {'_id': ex_id},
+            {
+                '$push': {
+                    'history': practice_session
+                },
+                '$inc': {
+                    'totalPracticeTime': random_session[1]
+                },
+                '$set': {
+                    'lastPracticeTime': random_session[1],
+                    'lastUpdated': practice_session_date
                 }
-            )
+            },
+            return_document=ReturnDocument.AFTER
+        )
 
-            # print 'Updated exercise %s' % updated_exercise.matched_count
+        return updated_exercise
+
+        # print 'Updated exercise %s' % updated_exercise.matched_count
