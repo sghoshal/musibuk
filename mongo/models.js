@@ -3,9 +3,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-// The actual collection name will be all lower case with an 's' appended
+// The actual collection name will be all lower case with an 's' appended.
+// For eg - 'User' will be created as 'users', 'exercise' will be 'exercises'.
 
-// -----  collection - 'usermodels' ----- //
+// -----  collection - 'users' ----- //
 module.exports.User = mongoose.model('user', new Schema({
     id:         ObjectId,
     firstName:  { type: String, required: '{PATH} is required.' },
@@ -16,6 +17,7 @@ module.exports.User = mongoose.model('user', new Schema({
 
 // ----- collection - 'exercises' ----- //
 
+// Schema for the history field in 'exercises' collection.
 var historySchema = new Schema({
     date: Date,
     practiceTime: Number,
@@ -39,13 +41,14 @@ var exerciseSchema = new Schema({
     history:            [ historySchema ]
 });
 
-// The combination of exercise name and the folder name should be unique.
+// The combination of (user Id, exercise name, folder Id) should be unique.
 exerciseSchema.index({ user_id: 1, name: 1, folderId: 1 }, { unique: true } );
 
 module.exports.Exercise = mongoose.model('exercise', exerciseSchema );
 
 // ----- collection - 'folders' ----- //
 
+// Schema for the history field in 'folders' collection.
 var folderHistorySchema = new Schema({
     date: Date,
     practiceTime: Number
@@ -65,7 +68,7 @@ var folderSchema = new Schema({
     history:            [ folderHistorySchema ]
 });
 
-// The combination of stack and folder name should be unique.
+// The combination of (user Id, folder name, stack name Id) name should be unique.
 folderSchema.index({ user_id: 1, name: 1, stack: 1 }, { unique: true });
 
 module.exports.Folder = mongoose.model('folder', folderSchema);

@@ -4,6 +4,9 @@ var mongoModel = require('../mongo/models');
 
 var router = express.Router();
 
+/**
+ * Create a folder in collection - 'exercise' on a Post request.
+ */
 router.post('/', function(req, res, next) {
 
     console.log('Folder Name: %s and stack: %s', req.body.folderName, req.body.stackName);

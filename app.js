@@ -26,6 +26,9 @@ var saveExerciseInfo = require('./routes/saveExerciseInfo');
 
 var app = express();
 
+/**
+ * Function to redirect the user to the login page if the request doesn't have the user set in the session.
+ */
 function requireLogin(req, res, next) {
     if(!req.user) {
         res.redirect('/');
@@ -35,6 +38,14 @@ function requireLogin(req, res, next) {
     }
 }
 
+/**
+ * Check if the request has session details.
+ * If yes - Check if the user can be looked up from the session info.
+            Delete the password from the request.
+            Set the user in the session.
+ *          Pass the control to the next handler.
+ * Else - Just pass the control to the next handler.
+ */
 function handleSession(req, res, next) {
     if(req.session && req.session.user) {
         console.log('app.js Session details: %s', req.session.user);
@@ -50,12 +61,13 @@ function handleSession(req, res, next) {
         });
     }
     else {
-        next();
+        next();         // Pass the control to the next handler.
     }
 }
 
-// view engine setup. Use EJS over Jade. That way I can use HTML.
+// view engine setup.
 app.set('views', path.join(__dirname, 'views'));
+// Use EJS over Jade. That way I can use HTML.
 app.set('view engine', 'ejs');
 
 // Third Party Middleware

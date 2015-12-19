@@ -1,3 +1,6 @@
+/**
+ * Module containing data and time related utility methods.
+ */
 module.exports = {
     
     convertSecondsToTimeString: function(seconds) {

@@ -8,6 +8,9 @@ var ObjectId = Schema.ObjectId;
 
 var router = express.Router();
 
+/**
+ * Create an exercise in collection - 'exercise' on a Post request.
+ */
 router.post('/', function(req, res, next) {
 
     console.log('Creating Exercise: %s in Folder: %s with Notes: %s', 
