@@ -8,13 +8,6 @@ var router = express.Router();
 
 var result = [];
 
-function isSameDate(date1, date2) {
-
-    return ((date1.getFullYear() === date2.getFullYear()) &&
-            (date1.getMonth() === date2.getMonth()) &&
-            (date1.getDate() === date2.getDate()));
-}
-
 function getLastWeekHistory(history) {
     var result = [];
     var today = new Date();
@@ -47,11 +40,11 @@ function getLastWeekHistory(history) {
         //     dateWeek.getFullYear().toString() + dateWeek.getMonth().toString() + dateWeek.getDate().toString());
         
         // console.log("Is %s / %s = Same Date? %s", dateWeek, utcConvertedHistoryDate, 
-        //     isSameDate(dateWeek, utcConvertedHistoryDate));
+        //     timeUtil.isSameDate(dateWeek, utcConvertedHistoryDate));
 
         var shortDateString = timeUtil.getShortDateString(dateWeek);
         
-        if ((historyIndex >= 0) && isSameDate(dateWeek, utcConvertedHistoryDate)) {
+        if ((historyIndex >= 0) && timeUtil.isSameDate(dateWeek, utcConvertedHistoryDate)) {
             console.log("Practice session found on date - %s", dateWeek.getDate().toString());
 
             result.push({
