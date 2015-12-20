@@ -4,9 +4,11 @@ var mongoModel = require('../mongo/models');
 var timeUtil = require('../utils/time_util');
 
 var ObjectId = require('mongodb').ObjectID;
-
 var router = express.Router();
 
+/**
+ * POST Handler - Update exercise and folder with the practice session info.
+ */
 function updateExerciseAndFolder(req, res, next) {
 
     var exerciseId = req.body.exerciseId;

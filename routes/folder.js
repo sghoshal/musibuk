@@ -6,11 +6,9 @@ var timeUtil = require('../utils/time_util')
 
 var router = express.Router();
 
-function fetchFolderExercises(req, res, next) {
-    var folderId = mongoose.Types.ObjectId(req.params.folderId.toString());
-    getFolderFromIdAndRenderPage(req, res, next, folderId);
-}
-
+/**
+ * Compute the 7 day history from today for a particular folder history.
+ */
 function getLastWeekHistory(history) {
 
     var result = [];
@@ -24,7 +22,6 @@ function getLastWeekHistory(history) {
     //     var utcDate = timeUtil.convertDateToUtc(history[i].date);
     //     console.log("%s-%s-%s", utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate());
     // }
-    
 
     for (var i = 0; i < 7; i++) {
         dateWeek.setDate(today.getDate() - i);
@@ -41,8 +38,7 @@ function getLastWeekHistory(history) {
         // NOTE: Mongo stores date in UTC but returns in the client's timezone. We want to convert to UTC for comparison.
         var utcConvertedHistoryDate = timeUtil.convertDateToUtc(currentHistoryElement.date);
 
-        // console.log("Date Week: Today minux %s = %s", i, timeUtil.getFullDateString(dateWeek));
-        // console.log("Current History Index = %s. Is Current Date Week same as Current history at historyIndex? Comparing in UTC ((%s) and (%s) = %s ", 
+        // console.log("Current History Index = %s. Is Current Date Week same as Current history at historyIndex? Comparing in UTC ((%s) and (%s) = %s ",
         //                 historyIndex, dateWeek, currentHistoryElement.date, timeUtil.isSameDate(dateWeek, utcConvertedHistoryDate));
 
         // Now check if the current date of week and current history date (UTC) are equal. If so, we have a practice session on this date week.
@@ -72,9 +68,12 @@ function getLastWeekHistory(history) {
     return result;
 }
 
+/**
+ * Get the folder info from DB, compute the 7 day history and render the page.
+ */
 function getFolderFromIdAndRenderPage(req, res, next, folderId) {
     mongoModel.Folder.find({_id: folderId }, function(err, folderDocument) {
-        if(err) {
+        if (err) {
             console.log("Error in fetching ")
             next(err);
         }
@@ -89,12 +88,15 @@ function getFolderFromIdAndRenderPage(req, res, next, folderId) {
     });
 }
 
+/**
+ * Render the HTML page.
+ */
 function renderPage(req, res, next, folder, lastWeekHistory) {
     var folderExerciseIdList = folder.exercises;
 
     console.log("Exercises to be fetched: %s", folderExerciseIdList );
 
-    if(typeof folderExerciseIdList === 'undefined' || folderExerciseIdList.length === 0) {
+    if (typeof folderExerciseIdList === 'undefined' || folderExerciseIdList.length === 0) {
         res.render('folder', { title: 'Musibuk',
                                        folderName: folder.name,
                                        folderId: folder._id,
@@ -107,7 +109,7 @@ function renderPage(req, res, next, folder, lastWeekHistory) {
     }
     else {
         mongoModel.Exercise.find( {"_id": { $in: folderExerciseIdList } }, function(err, exercises) {
-            if(err) {
+            if (err) {
                 console.log("Error fetching Exercise documents for input: %s", folderExerciseIdList);
                 next();
             }
@@ -126,6 +128,9 @@ function renderPage(req, res, next, folder, lastWeekHistory) {
     }
 }  
 
+/**
+ * The POST handler - create en exercise in folder.
+ */
 function createExerciseInFolder(req, res, next) {
 
     console.log('Creating Exercise - %s in Folder: %s with Notes: %s', 
@@ -181,6 +186,14 @@ function createExerciseInFolder(req, res, next) {
                                 });
         }
     });
+}
+
+/**
+ * GET Handler - Fetch all exercises in a folder.
+ */
+function fetchFolderExercises(req, res, next) {
+    var folderId = mongoose.Types.ObjectId(req.params.folderId.toString());
+    getFolderFromIdAndRenderPage(req, res, next, folderId);
 }
 
 router.get('/:folderId', fetchFolderExercises);

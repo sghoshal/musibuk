@@ -5,18 +5,21 @@ var bcrypt = require('bcryptjs');
 
 var router = express.Router();
 
-// GET request handler on /register
+/**
+ * GET handler - Render the registration page.
+ */
 router.get('/', function(req, res, next) {
   res.render('register', { title: 'Register' });
 });
 
-// POST request handler on /register
+/**
+ * POST handler - Store a bcrypt hash of the password.
+ */
 router.post('/', function(req, res) {
 
     var passwordHash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 
     var user = new mongoModels.User({
-
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -25,15 +28,15 @@ router.post('/', function(req, res) {
 
     user.save(function(err, user) {
         if(err) {
-            var error = 'Something bad happened! Try again!';
+            var error = 'Could not register user. Try again!';
             if(err.code === 11000) {
                 error = 'That email is already taken, try another!';
             }
             res.render('register', { title: 'Musibuk - Register', error: error });
         }
         else {
-            console.log('Registered user: First Name: %s, Last Name: %s, Email: %s, Password: %s', 
-                            user.firstName, user.lastName, user.email, user.password);
+            // console.log('Registered user: First Name: %s, Last Name: %s, Email: %s, Password: %s',
+            //                user.firstName, user.lastName, user.email, user.password);
             res.redirect('..')
         }
     });

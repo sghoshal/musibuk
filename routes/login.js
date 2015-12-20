@@ -6,6 +6,10 @@ var bcrypt = require('bcryptjs');
 
 var router = express.Router();
 
+/**
+ * POST Handler - Validate the user credentials.
+ * Redirect to home page if the credentials are valid, otherwise render the login page again.
+ */
 router.post('/', function(req, res, next) {
     mongoModels.User.findOne({ email: req.body.email }, function(err, user) {
         var errorMsg1 = "Incorrect Email or Password";

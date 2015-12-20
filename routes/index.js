@@ -2,7 +2,9 @@ var express = require('express');
 
 var router = express.Router();
 
-/* GET home page. */
+/**
+ * Render the login page. If the user session is already present then redirect to home page.
+ */
 router.get('/', function(req, res, next) {
     if(req.user) {
         res.redirect('/home');

@@ -1,11 +1,14 @@
 var express = require('express');
 var mongoose = require('mongoose');
+
 var mongoModel = require('../mongo/models');
 
 var router = express.Router();
-
 var result = [];
 
+/**
+ * Render the home page.
+ */
 function renderHomePage(req, res, next) {
     console.log("Rendering Home Page with results: %s", result );
 
@@ -14,8 +17,9 @@ function renderHomePage(req, res, next) {
                          errorMsg: req.flash('errorMsg') } );
 }
 
-router.get('/', fetchUserInfoAndRenderHomePage);
-
+/**
+ * GET Handler - Fetch all exercises and folders info for the logged in user.
+ */
 function fetchUserInfoAndRenderHomePage(req, res, next) {
     result = [];
     mongoModel.Exercise.find({ 'user_id': req.user.email, "folderId": "root" }, onFetchAllExercises);
@@ -40,12 +44,14 @@ function fetchUserInfoAndRenderHomePage(req, res, next) {
             result = result.concat(allFolders);
 
             // Here we can call renderHomePage with req, res, next because
-            // those variables are paramters of the outer function. During 
+            // those variables are parameters of the outer function. During
             // callback execution, this function still has reference to
             // req, res, next.
             renderHomePage(req, res, next);
         }
     }
 }
+
+router.get('/', fetchUserInfoAndRenderHomePage);
 
 module.exports = router;

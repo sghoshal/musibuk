@@ -8,6 +8,9 @@ var router = express.Router();
 
 var result = [];
 
+/**
+ * Compute the 7 day history from today.
+ */
 function getLastWeekHistory(history) {
     var result = [];
     var today = new Date();
@@ -74,7 +77,9 @@ function getLastWeekHistory(history) {
     return result;
 }
 
-
+/**
+ * Render the HTML page.
+ */
 function renderPage(req, res, next, exercise, totalPracticeTimeString, folderName, folderId, lastWeekHistory) {
     console.log('- exercise.js: Rendering page now. Ex Name: %s, Folder Name: %s, Folder ID: %s', 
                     exercise.name, folderName, folderId);
@@ -94,12 +99,16 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
     });
 }
 
+/**
+ * GET handler.
+ * Finds the exercise info in the DB
+ */
 router.get('/:exerciseId', function(req, res, next) {
     console.log("In Exercise route");
     var exerciseId = mongoose.Types.ObjectId(req.params.exerciseId.toString());
 
     mongoModel.Exercise.find( { "user_id": req.user.email, _id: exerciseId }, function(err, exerciseDoc) {
-        if(err) {
+        if (err) {
             console.log("Error in fetching exercise with ID: %s", exerciseId);
             next(err);
         }
@@ -109,14 +118,14 @@ router.get('/:exerciseId', function(req, res, next) {
 
             var totalPracticeTimeString = timeUtil.convertSecondsToTimeString(exercise.totalPracticeTime);
 
-            if(exercise.folderId !== 'root') {
+            if (exercise.folderId !== 'root') {
 
-                console.log("Folder is not root. Is it? Folder ID: %s", exercise.folderId);
+                // console.log("Folder is not root. Folder ID: %s", exercise.folderId);
 
                 var folderId = mongoose.Types.ObjectId(exercise.folderId.toString());
             
                 mongoModel.Folder.find({ _id: folderId, "user_id": req.user.email }, function(err, folderDocument) {
-                    if(err) {
+                    if (err) {
                         console.log("Error in fetching folder: %s", folderId)
                         next(err);
                     }
@@ -130,7 +139,7 @@ router.get('/:exerciseId', function(req, res, next) {
                 });  
             }
             else {
-                console.log("Folder ID = root. Folder ID: %s", exercise.folderId);
+                // console.log("Folder ID = root. Folder ID: %s", exercise.folderId);
                 
                 var lastWeekHistory = getLastWeekHistory(exercise.history);
                 renderPage(req, res, next, exercise, totalPracticeTimeString, null, exercise.folderId, lastWeekHistory);

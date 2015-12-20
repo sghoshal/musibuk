@@ -3,9 +3,11 @@ var mongoose = require('mongoose');
 var mongoModel = require('../mongo/models');
 
 var ObjectId = require('mongodb').ObjectID;
-
 var router = express.Router();
 
+/**
+ * POST Handler - Save exercsise BPM and use return HTML for doing AJAX page update.
+ */
 router.post('/', function(req, res, next) {
     console.log("Req: %s %s", req.body.bpm, req.body.exerciseId);
 
