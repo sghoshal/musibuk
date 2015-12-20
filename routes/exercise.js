@@ -88,7 +88,7 @@ function renderPage(req, res, next, exercise, totalPracticeTimeString, folderNam
         "exerciseId": exercise._id.toString(),
         "exerciseName": exercise.name,
         "createdDate": exercise.createdTime,
-        "lastPracticed": exercise.lastUpdated,
+        "lastPracticed": timeUtil.getShortDateWithYearString(exercise.lastUpdated),
         "totalTimePracticed": totalPracticeTimeString,
         "bpm": exercise.bpm,
         "history": exercise.history,

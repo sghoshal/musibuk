@@ -42,6 +42,13 @@ module.exports = {
         return (year.toString() + "-" + month.toString() + "-" + dateInMonth.toString());
     },
 
+    getShortDateWithYearString: function(inputDate) {
+        var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+
+        return monthNames[inputDate.getMonth()] + " " + inputDate.getDate() + ", " + inputDate.getFullYear();
+    },
+
     getShortDateString: function(inputDate) {
         var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];

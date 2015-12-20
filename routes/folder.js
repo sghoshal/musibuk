@@ -118,7 +118,7 @@ function renderPage(req, res, next, folder, lastWeekHistory) {
                                        folderName: folder.name,
                                        folderId: folder._id,
                                        exercises: exercises,
-                                       lastPracticed: folder.lastUpdated,
+                                       lastPracticed: timeUtil.getShortDateWithYearString(folder.lastUpdated),
                                        lastPracticeTime: timeUtil.convertSecondsToTimeString(folder.lastPracticeTime),
                                        totalPracticeTime: timeUtil.convertSecondsToTimeString(folder.totalPracticeTime),
                                        errorMsg: req.flash('errorMsg'),
