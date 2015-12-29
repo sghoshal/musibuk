@@ -8,6 +8,16 @@ from modules.user import User
 
 
 def create_folders_and_exercises(collection_folders, collection_exercises, folders_exercises_to_create, stack):
+    """
+    Create all Folders and Exercises in these Folders as specified by the parameters: folders_exercises_to_create & stack
+
+    :param collection_folders:          The MongoDB 'folders' collection reference.
+    :param collection_exercises:        The MongoDB 'exercises' collection reference.
+    :param folders_exercises_to_create: A dictionary of folders and corresponding exercises to create.
+    :param stack:                       The parent stack to which all the folders.
+    :return:
+    """
+
     for folder_name in folders_exercises_to_create.keys():
         print "Creating Folder: %s" % folder_name
         folder_created = Folder.create_folder(collection_folders, folder_name, stack)
@@ -25,6 +35,14 @@ def create_folders_and_exercises(collection_folders, collection_exercises, folde
 
 
 def create_practice_sessions(collection_folders, collection_exercises):
+    """
+    Create a randomized practice session for all folders and corresponding exercises present in the DB.
+
+    :param collection_folders:      The MongoDB 'folders' collection reference.
+    :param collection_exercises:    The MongoDB 'exercises' collection reference.
+    :return:
+    """
+
     all_folders = Folder.get_all_folders(collection_folders)
 
     for folder in all_folders:
@@ -47,6 +65,8 @@ def create_practice_sessions(collection_folders, collection_exercises):
 
 
 def main():
+    """ Entry point of the script. """
+
     client = MongoClient(Constants.MONGO_URI)
     db = client[Constants.DATABASE]
 

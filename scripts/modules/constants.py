@@ -1,4 +1,6 @@
 class Constants:
+    """ Class for all constants. """
+
     HOST = 'localhost'
     PORT = 27017
     DATABASE = 'musibuk'
@@ -28,6 +30,12 @@ class Constants:
                   'Time', 'Ancestral Solo', 'Nothing Else Matters', 'Freedom'],
         'Jam Tracks': ['A minor Blues', '2-5-1 progression', 'Rock Progression']
     }
+
+    BPM_MIN = 120
+    BPM_MAX = 140
+    PRACTICE_TIME_MIN = 2
+    PRACTICE_TIME_MAX = 10
+    SECONDS_IN_MIN = 60
 
     def __init__(self):
         Constants()

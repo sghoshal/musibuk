@@ -6,11 +6,23 @@ from pymongo import ReturnDocument
 
 
 class Folder:
+    """
+    The class holds static methods to carry out DB operations related to folders in the app.
+    """
+
     def __init__(self):
         Folder(self)
 
     @staticmethod
     def create_folder(collection_folders, folder_name, stack):
+        """
+        Creates a single folder in the DB.
+
+        :param collection_folders:  MongoDB reference to collection - 'folders'
+        :param folder_name:         The name of the folder to be created.
+        :param stack:               The parent stack the folder belongs to.
+        :return:                    The created folder document.
+        """
         today = datetime.utcnow()
         created_folder = collection_folders.insert_one(
             {
@@ -31,6 +43,14 @@ class Folder:
 
     @staticmethod
     def delete_folder_exercises(collection_exercises, folder_name):
+        """
+        Delete all exercises of a particular. Find the folder to be deleted by name.
+
+        :param collection_exercises: MongoDB reference to collection - 'exercises'
+        :param folder_name:          Name of the folder.
+        :return:                     Number of exercises deleted.
+        """
+
         num_rows_deleted = collection_exercises.delete_many(
             {
                 "user_id": Constants.TEST_USER_EMAIL,
@@ -41,31 +61,33 @@ class Folder:
 
     @staticmethod
     def get_all_folders(collection_folders):
+        """
+        Fetches all folders in the DB.
+
+        :param collection_folders: MongoDB reference to collection - 'folders'
+        :return:
+        """
+
         documents = []
 
         cursor = collection_folders.find({})
 
         for document in cursor:
-            # doc_attributes = {}
-            #
-            # for key, value in document.iteritems():
-            #     if key == 'user_id':
-            #         doc_attributes[key] = value
-            #     elif key == '_id':
-            #         doc_attributes[key] = value
-            #     elif key == 'name':
-            #         doc_attributes[key] = value
-            #     elif key == 'stack':
-            #         doc_attributes[key] = value
-
             documents.append(document)
 
         return documents
 
     @staticmethod
     def update_folder_with_practice_session(collection_folders, folder, practice_session, ex_last_practice_time):
+        """
+        Update the folder with information from the last practice session in one of its containing exercises.
 
-        # print "Original Folder: %s" % folder
+        :param collection_folders:      MongoDB reference to collection - 'folders'.
+        :param folder:                  The name of the folder.
+        :param practice_session:        Practice session dictionary.
+        :param ex_last_practice_time:   The total time the exercises in this folder was last practiced.
+        :return:                        The updated folder document.
+        """
 
         new_folder = {
             'createdTime': folder['createdTime'],
@@ -107,19 +129,16 @@ class Folder:
                 found_history = found_history_tuple[0]
                 index = found_history_tuple[1]
 
-                # print "FOUND!\n"
                 new_history_entry['date'] = practice_session['date']
                 new_history_entry['practiceTime'] = found_history['practiceTime'] + practice_session['practiceTime']
 
                 new_folder_history_list[index] = new_history_entry
             else:
-                # print "NOPE. COULDNT FIND IT BRO!\n"
                 new_history_entry['date'] = practice_session['date']
                 new_history_entry['practiceTime'] = practice_session['practiceTime']
 
                 new_folder_history_list.append(new_history_entry)
         else:
-            # print "Length of folder history = 0"
             new_history_entry['date'] = practice_session['date']
             new_history_entry['practiceTime'] = practice_session['practiceTime']
 
@@ -139,6 +158,13 @@ class Folder:
 
     @staticmethod
     def is_history_present(history_list, input_date):
-        # print "Trying to search for history with Date: %s" % input_date.date()
+        """
+        Returns the history session of a folder on a particular date if present.
+
+        :param history_list:    The history list to be checked in.
+        :param input_date:      The date we want to check the history to be present.
+        :return:                The history dictionary if there is a session found on the input date. None otherwise.
+        """
+
         found_history = next(((d, index) for (index, d) in enumerate(history_list) if d['date'].date() == input_date.date()), None)
         return found_history
