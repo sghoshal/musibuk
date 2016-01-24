@@ -2,13 +2,13 @@ Musibuk is a web application designed around the practice needs of a musician. I
 ___
 Each exercise provides tools like Metronome (tempo click), a stop watch to track how long you are practicing and a webcam to check if your form is correct.    
 ___
-The app also tracks the progress of the user over the last 7 days. It provides bar graph visualizations showing the Time and Beats Per Minute achieved of practice sessions.    
+The app also tracks the progress of the user over the last 7 days. It provides bar graph visualizations showing the Time and Beats Per Minute achieved during a practice session.    
 ___
 On the folder page, the app also shows the total time all the exercises were practiced in the folder over the last 7 days.    
 ___
 The app can be accessed here -> http://ec2-52-25-232-144.us-west-2.compute.amazonaws.com:3000/
 ___
-Here are some screenshots of the app:    
+Here are some screenshots:    
 
 The Folder page:    
 ![alt tag](https://raw.githubusercontent.com/sghoshal/musibuk/master/screenshots/folder.jpg)    
@@ -19,7 +19,7 @@ The Exercise page:
 The Home page:    
 ![alt tag](https://raw.githubusercontent.com/sghoshal/musibuk/master/screenshots/home.jpg)
 ___
-Steps to run this app locally:
+Steps to run locally:
 
 1. Install node.js and npm
 
@@ -27,7 +27,7 @@ Steps to run this app locally:
 
 2. Install MongoDB
 
-The app is running on Mongo 2.4.8. Here is the link for steps to install this version (not the latest)
+The app is running on Mongo 2.4.8. The link below provides the steps to install this version (not the latest)
 
 https://docs.mongodb.org/v2.4/tutorial/install-mongodb-on-os-x/#manual-installation
 
