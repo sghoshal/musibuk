@@ -33,13 +33,13 @@ https://docs.mongodb.org/v2.4/tutorial/install-mongodb-on-os-x/#manual-installat
 
 3. Fetch dependencies, start Mongod and run the app:
 
-git clone https://github.com/sghoshal/musibuk
-cd musibuk
-npm install
-mkdir data
-mongod --dbpath data/
-npm start
-
-localhost:3000 should bring the app home page.
+git clone https://github.com/sghoshal/musibuk  
+cd musibuk  
+npm install  
+mkdir data  
+mongod --dbpath data/  
+npm start  
+  
+localhost:3000 should bring the app home page.  
 
 
